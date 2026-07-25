@@ -55,36 +55,40 @@ export const AboutUsModal: React.FC<AboutUsModalProps> = ({ isOpen, onClose }) =
         <div className="p-6 space-y-6 overflow-y-auto custom-scrollbar flex-1">
           
           {/* 🌟 1. PROMINENT INSPIRATIONAL ORIGIN SECTION & FOUNDER SPOTLIGHT */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950/60 via-slate-900 to-emerald-950/60 p-6 border-2 border-amber-500/50 shadow-2xl shadow-amber-500/10">
-            {/* Ambient Background Badge */}
-            <div className="flex items-center justify-between mb-4 border-b border-amber-500/20 pb-3">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-black uppercase tracking-wider">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950/70 via-slate-900 to-emerald-950/70 p-6 border-2 border-amber-500/50 shadow-2xl shadow-amber-500/15 space-y-4">
+            {/* Ambient Header Badge */}
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-amber-500/20 pb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-black uppercase tracking-wider">
                 <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                <span>Young Innovator &amp; Founder Spotlight</span>
+                <span>Founder's Vision &amp; Story</span>
               </div>
-              <span className="text-[11px] font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
-                Aged 14 • Visionary
+              <span className="text-[11px] font-mono font-extrabold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
+                Ashutosh Rai • Aged 14
               </span>
             </div>
 
             <div className="flex flex-col sm:flex-row items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-950 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/30 font-black text-xl">
-                <Lightbulb className="w-8 h-8 text-slate-950" />
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-yellow-400 to-amber-300 text-slate-950 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/30 font-black text-xl">
+                <Lightbulb className="w-8 h-8 text-slate-950 stroke-[2.5]" />
               </div>
 
               <div className="space-y-3 flex-1">
-                <h3 className="text-lg font-black text-amber-300 tracking-tight">
-                  The Story &amp; Vision of Ashutosh Rai
+                <h3 className="text-lg font-black text-amber-300 tracking-tight flex items-center gap-2">
+                  <span>Building a Caring Shield for Every Indian Home</span>
                 </h3>
                 <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-                  <strong>Ashutosh Rai</strong>, a 14-year-old student and tech-enthusiast, founded <strong>AssetDoctor (ServiVault)</strong> to solve a problem that plagues millions of households: lost paper invoices, expired warranties, and misplaced vehicle documents.
+                  <strong>Ashutosh Rai</strong>, a 14-year-old student innovator, created <strong>AssetDoctor (ServiVault)</strong> with a deeply personal mission: to stand by every family as a trustworthy, supportive digital helper that protects their hard-earned home assets, gadgets, and vehicles.
                 </p>
-                <div className="p-4 bg-slate-950/80 rounded-2xl border border-amber-500/30 text-amber-100 text-xs italic leading-relaxed shadow-inner">
-                  <div className="flex items-center gap-2 mb-1.5 text-amber-400 font-semibold not-italic">
-                    <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
-                    <span>The Founding Vision</span>
+                
+                {/* Founder's Vision Card */}
+                <div className="p-4 rounded-2xl bg-slate-950/90 border border-amber-500/30 text-amber-100 text-xs leading-relaxed shadow-xl space-y-2">
+                  <div className="flex items-center gap-2 text-amber-400 font-bold not-italic">
+                    <Heart className="w-4 h-4 text-rose-400 fill-rose-400 shrink-0" />
+                    <span className="uppercase text-[11px] tracking-wider font-extrabold">Ashutosh's Promise to Families</span>
                   </div>
-                  &ldquo;Every family deserves a <strong>&apos;Smart Health &amp; Care Card&apos;</strong> for their valuable possessions. No more losing money on repairs or hunting for invoices when things break down.&rdquo;
+                  <blockquote className="italic text-slate-300">
+                    &ldquo;When a home appliance breaks down or a warranty card vanishes, families shouldn&apos;t feel stressed or forced into expensive out-of-pocket repairs. AssetDoctor is built to be your household&apos;s digital guardian—keeping every bill safe, sending proactive expiry reminders, and saving your family money.&rdquo;
+                  </blockquote>
                 </div>
               </div>
             </div>

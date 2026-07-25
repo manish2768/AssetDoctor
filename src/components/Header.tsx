@@ -98,9 +98,18 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         
         {/* Logo & Name */}
-        <div 
-          onClick={onOpenSplashScreen}
-          className="flex items-center gap-2.5 cursor-pointer group"
+        <a 
+          href="/"
+          onClick={(e) => {
+            if (onOpenLandingPage) {
+              e.preventDefault();
+              onOpenLandingPage();
+            } else if (onOpenSplashScreen) {
+              e.preventDefault();
+              onOpenSplashScreen();
+            }
+          }}
+          className="flex items-center gap-2.5 cursor-pointer group hover:opacity-90 transition-all"
           title="AssetDoctor Home"
         >
           <div className="w-10 h-10 bg-teal-500/10 border border-teal-500/30 rounded-xl flex items-center justify-center text-teal-400 shadow-lg shadow-teal-500/10 group-hover:scale-105 transition-transform">
@@ -113,9 +122,9 @@ export const Header: React.FC<HeaderProps> = ({
                 Vault
               </span>
             </h1>
-            <p className="text-[10px] text-slate-400 font-medium">Smart Care & Warranty Vault</p>
+            <p className="text-[10px] text-slate-400 font-medium">Smart Care &amp; Warranty Vault</p>
           </div>
-        </div>
+        </a>
 
         {/* Center / Desktop Stats Bar */}
         <div className="hidden lg:flex items-center gap-4 bg-slate-950/60 border border-slate-800 px-3.5 py-1.5 rounded-2xl">

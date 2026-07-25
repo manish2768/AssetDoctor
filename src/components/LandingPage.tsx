@@ -78,12 +78,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
           {/* Logo & Brand */}
-          <div className="flex items-center gap-3">
+          <a
+            href="/"
+            className="flex items-center gap-3 cursor-pointer group hover:opacity-90 transition-all"
+            title="AssetDoctor Home"
+          >
             <AssetDoctorLogo size="md" />
             <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
               <ShieldCheck className="w-3.5 h-3.5" /> India's #1 Asset Vault
             </span>
-          </div>
+          </a>
 
           {/* Navigation Links */}
           <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
