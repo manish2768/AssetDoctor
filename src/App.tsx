@@ -29,6 +29,7 @@ import { OnboardingTutorial } from './components/OnboardingTutorial';
 import { DepreciationTrackerWidget } from './components/DepreciationTrackerWidget';
 import { FastagCheckerWidget } from './components/FastagCheckerWidget';
 import { LandingPage } from './components/LandingPage';
+import { Footer } from './components/Footer';
 import { saveAssetToCloud } from './services/assetCloudService';
 import {
   getAllAssetsFromDB,
@@ -754,6 +755,9 @@ export default function App() {
       {showSplash && (
         <SplashScreen onFinish={() => setShowSplash(false)} />
       )}
+
+      {/* Footer */}
+      <Footer />
 
       {/* Floating Action Button (FAB) for Quick Scanning */}
       <button
