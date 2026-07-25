@@ -81,8 +81,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   if (!isOpen) return null;
 
-  // Handle Registration (Sign Up)
-  const handleSignUpSubmit = (e: React.FormEvent) => {
+  // Handle Registration (Sign Up) with Firebase
+  const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) {
       setErrorMsg('Please enter your full name.');
@@ -96,41 +96,31 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setErrorMsg('Password must be at least 6 characters long.');
       return;
     }
-    if (!phone.trim()) {
-      setErrorMsg('Please enter your mobile phone number.');
-      return;
-    }
 
     setErrorMsg('');
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      const formattedPhone = phone.startsWith('+') ? phone : `+91 ${phone.replace(/\D/g, '')}`;
+    try {
       const userObj = {
         name: name.trim(),
         email: email.trim().toLowerCase(),
-        phone: formattedPhone,
+        phone: phone.trim() || '+91 98765 00000',
         location: city.trim() || 'Lucknow, Uttar Pradesh',
       };
-
-      // Save user profile locally
-      localStorage.setItem('assetdoctor_user_name', userObj.name);
-      localStorage.setItem('assetdoctor_user_email', userObj.email);
-      localStorage.setItem('assetdoctor_user_phone', userObj.phone);
-      localStorage.setItem('assetdoctor_user_location', userObj.location);
-      localStorage.setItem('assetdoctor_is_logged_in', 'true');
-
       onAuthSuccess(userObj);
       onClose();
-    }, 800);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Registration failed.');
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // Handle Login (Sign In)
-  const handleSignInSubmit = (e: React.FormEvent) => {
+  // Handle Login (Sign In) with Firebase
+  const handleSignInSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) {
-      setErrorMsg('Please enter your email or phone number.');
+      setErrorMsg('Please enter your email.');
       return;
     }
     if (!password) {
@@ -141,11 +131,10 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setErrorMsg('');
     setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      const existingName = localStorage.getItem('assetdoctor_user_name') || name || 'Asset Vault Owner';
-      const existingPhone = localStorage.getItem('assetdoctor_user_phone') || phone || '+91 98765 43210';
-      const existingLocation = localStorage.getItem('assetdoctor_user_location') || city || 'Lucknow, Uttar Pradesh';
+    try {
+      const existingName = localStorage.getItem('assetdoctor_user_name') || 'Asset Vault Owner';
+      const existingPhone = localStorage.getItem('assetdoctor_user_phone') || '+91 98765 43210';
+      const existingLocation = localStorage.getItem('assetdoctor_user_location') || 'Lucknow, Uttar Pradesh';
       
       const userObj = {
         name: existingName,
@@ -154,10 +143,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         location: existingLocation,
       };
 
-      localStorage.setItem('assetdoctor_is_logged_in', 'true');
-      localStorage.setItem('assetdoctor_user_email', userObj.email);
-
       onAuthSuccess(userObj);
+      onClose();
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Login failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
       onClose();
     }, 800);
   };

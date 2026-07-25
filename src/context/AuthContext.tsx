@@ -6,7 +6,11 @@ import {
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  updateProfile
+  updateProfile,
+  sendEmailVerification,
+  updateEmail,
+  EmailAuthProvider,
+  reauthenticateWithCredential
 } from 'firebase/auth';
 import { auth, googleProvider } from '../firebase';
 
@@ -16,6 +20,9 @@ interface AuthContextType {
   loginWithGoogle: () => Promise<void>;
   loginWithEmail: (email: string, pass: string) => Promise<void>;
   signupWithEmail: (name: string, email: string, pass: string) => Promise<void>;
+  sendVerificationEmail: () => Promise<void>;
+  updateUserEmail: (newEmail: string, currentPassword?: string) => Promise<void>;
+  updateUserPhone: (newPhone: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -63,13 +70,48 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signupWithEmail = async (name: string, email: string, pass: string) => {
     try {
       const res = await createUserWithEmailAndPassword(auth, email, pass);
-      if (res.user && name) {
-        await updateProfile(res.user, { displayName: name });
+      if (res.user) {
+        if (name) {
+          await updateProfile(res.user, { displayName: name });
+        }
+        // Send email verification right after user registers
+        await sendEmailVerification(res.user).catch((err) => {
+          console.warn("Email verification send notice:", err);
+        });
       }
     } catch (error: any) {
       console.error("Signup error:", error);
       throw error;
     }
+  };
+
+  const sendVerificationEmail = async () => {
+    if (auth.currentUser) {
+      await sendEmailVerification(auth.currentUser);
+    } else {
+      throw new Error("No active user logged in.");
+    }
+  };
+
+  const updateUserEmail = async (newEmail: string, currentPassword?: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) throw new Error("No active user session.");
+
+    // Re-authenticate if password is provided and user has password provider
+    if (currentPassword && currentUser.email) {
+      const credential = EmailAuthProvider.credential(currentUser.email, currentPassword);
+      await reauthenticateWithCredential(currentUser, credential);
+    }
+
+    await updateEmail(currentUser, newEmail);
+    await sendEmailVerification(currentUser).catch((e) => console.warn("Verification email error:", e));
+    localStorage.setItem('assetdoctor_user_email', newEmail);
+  };
+
+  const updateUserPhone = async (newPhone: string) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) throw new Error("No active user session.");
+    localStorage.setItem('assetdoctor_user_phone', newPhone);
   };
 
   const logout = async () => {
@@ -82,7 +124,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, loginWithGoogle, loginWithEmail, signupWithEmail, logout }}>
+    <AuthContext.Provider 
+      value={{ 
+        user, 
+        loading, 
+        loginWithGoogle, 
+        loginWithEmail, 
+        signupWithEmail, 
+        sendVerificationEmail,
+        updateUserEmail,
+        updateUserPhone,
+        logout 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
