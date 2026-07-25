@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { AssetDoctorLogo } from './AssetDoctorLogo';
 import { 
-  ShieldCheck, 
   Mail, 
   Lock, 
   User, 

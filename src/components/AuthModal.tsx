@@ -151,9 +151,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       setLoading(false);
     }
   };
-      onClose();
-    }, 800);
-  };
 
   // Handle Forgot Password
   const handleForgotPasswordSubmit = (e: React.FormEvent) => {

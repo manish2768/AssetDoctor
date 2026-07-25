@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import {
   X,
   Mail,
-  Send,
   CheckCircle2,
   Lock,
   AlertCircle,

@@ -4,7 +4,6 @@ import {
   X,
   Phone,
   CheckCircle2,
-  Lock,
   Smartphone,
   Sparkles,
   AlertCircle
