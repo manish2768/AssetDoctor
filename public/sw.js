@@ -1,26 +1,29 @@
-// Minimal Service Worker for AssetDoctor PWA
-const CACHE_NAME = 'assetdoctor-v1';
+// Service Worker for AssetDoctor PWA
+const CACHE_NAME = 'assetdoctor-pwa-v1';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
+  '/sitemap.xml',
+  '/robots.txt',
   '/icon.svg',
   '/logo.png'
 ];
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(
+self.addEventListener('install', (e) => {
+  console.log('Service Worker Installed');
+  e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS).catch(() => {});
     }).then(() => self.skipWaiting())
   );
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keyList) => {
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) => {
       return Promise.all(
-        keyList.map((key) => {
+        keys.map((key) => {
           if (key !== CACHE_NAME) {
             return caches.delete(key);
           }
@@ -30,12 +33,12 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-self.addEventListener('fetch', (event) => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request).catch(() => cachedResponse);
+self.addEventListener('fetch', (e) => {
+  // बेसिक कैशिंग/ऑफलाइन सपोर्ट के लिए
+  if (e.request.method !== 'GET') return;
+  e.respondWith(
+    caches.match(e.request).then((cachedResponse) => {
+      return cachedResponse || fetch(e.request).catch(() => cachedResponse);
     })
   );
 });
-
