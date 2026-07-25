@@ -4,12 +4,56 @@ import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI, Type } from '@google/genai';
 
+import nodemailer from 'nodemailer';
+
+dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json({ limit: '20mb' }));
+
+// Configure Titan Mail SMTP Transporter
+const smtpHost = process.env.SMTP_HOST || 'smtp.titan.email';
+const smtpPort = Number(process.env.SMTP_PORT) || 465;
+const smtpUser = process.env.SMTP_USER || 'support@assetdoctor.in';
+const smtpPass = process.env.SMTP_PASS || '';
+
+const mailTransporter = nodemailer.createTransport({
+  host: smtpHost,
+  port: smtpPort,
+  secure: smtpPort === 465, // SSL for 465
+  auth: {
+    user: smtpUser,
+    pass: smtpPass,
+  },
+});
+
+// Transactional Email Endpoint (Titan Mail)
+app.post('/api/send-email', async (req, res) => {
+  try {
+    const { to, subject, html, text } = req.body;
+    if (!to || !subject || (!html && !text)) {
+      return res.status(400).json({ success: false, error: 'Missing required parameters: to, subject, html/text' });
+    }
+
+    const mailOptions = {
+      from: `"AssetDoctor Vault" <${smtpUser}>`,
+      to,
+      subject,
+      text: text || '',
+      html: html || '',
+    };
+
+    const info = await mailTransporter.sendMail(mailOptions);
+    console.log('Titan Mail sent successfully:', info.messageId);
+    return res.json({ success: true, messageId: info.messageId });
+  } catch (err: any) {
+    console.error('Titan Mail SMTP Error:', err);
+    return res.status(500).json({ success: false, error: err.message || 'Failed to send email via Titan Mail' });
+  }
+});
 
 // Initialize Gemini Client safely
 let aiClient: GoogleGenAI | null = null;
