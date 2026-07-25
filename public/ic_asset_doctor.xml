@@ -1,0 +1,25 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="512dp"
+    android:height="512dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+    
+    <!-- Outer Shield Frame -->
+    <path
+        android:pathData="M256,150 C310,150 340,170 340,230 C340,300 280,345 256,362 C232,345 172,300 172,230 C172,170 202,150 256,150 Z"
+        android:strokeColor="#10b981"
+        android:strokeWidth="7"/>
+
+    <!-- Doctor Cross -->
+    <path
+        android:pathData="M232,205 H280 V232 H307 V280 H280 V307 H232 V280 H205 V232 H232 Z"
+        android:strokeColor="#06b6d4"
+        android:strokeWidth="8"/>
+
+    <!-- Pulse Line -->
+    <path
+        android:pathData="M190,256 H225 L238,235 L250,275 L264,245 L274,256 H322"
+        android:strokeColor="#ffffff"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"/>
+</vector>
