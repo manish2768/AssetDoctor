@@ -1,0 +1,88 @@
+import React from 'react';
+
+interface AssetDoctorIconProps {
+  size?: number;
+}
+
+export const AssetDoctorIcon: React.FC<AssetDoctorIconProps> = ({ size = 512 }) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width={size} height={size}>
+      <defs>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#0f172a"/>
+          <stop offset="100%" stopColor="#020617"/>
+        </linearGradient>
+
+        <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.25"/>
+          <stop offset="100%" stopColor="#ffffff" stopOpacity="0.05"/>
+        </linearGradient>
+
+        <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6"/>
+          <stop offset="50%" stopColor="#10b981" stopOpacity="0.3"/>
+          <stop offset="100%" stopColor="#00f2fe" stopOpacity="0.8"/>
+        </linearGradient>
+
+        <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#10b981"/>
+          <stop offset="100%" stopColor="#06b6d4"/>
+        </linearGradient>
+
+        <filter id="popShadow" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="16" stdDeviation="20" floodColor="#000000" floodOpacity="0.6"/>
+          <feDropShadow dx="0" dy="30" stdDeviation="35" floodColor="#06b6d4" floodOpacity="0.25"/>
+        </filter>
+
+        <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+          <feGaussianBlur stdDeviation="8" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <rect width="512" height="512" rx="110" fill="url(#bgGrad)"/>
+
+      <rect x="64" y="64" width="384" height="384" rx="90" 
+            fill="url(#glassGrad)" 
+            stroke="url(#rimGrad)" 
+            strokeWidth="3.5" 
+            filter="url(#popShadow)"/>
+
+      <path d="M 120 70 Q 256 95 392 70" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" opacity="0.4"/>
+
+      <g stroke="url(#glowGrad)" strokeWidth="5" strokeLinecap="round" fill="none" opacity="0.85">
+        <path d="M 124 160 L 124 134 Q 124 124 134 124 L 160 124"/>
+        <path d="M 352 124 L 378 124 Q 388 124 388 134 L 388 160"/>
+        <path d="M 124 352 L 124 378 Q 124 388 134 388 L 160 388"/>
+        <path d="M 352 388 L 378 388 Q 388 388 388 378 L 388 352"/>
+      </g>
+
+      <path d="M 256 150 C 310 150 340 170 340 230 C 340 300 280 345 256 362 C 232 345 172 300 172 230 C 172 170 202 150 256 150 Z" 
+            fill="none" 
+            stroke="url(#glowGrad)" 
+            strokeWidth="7" 
+            strokeLinejoin="round" 
+            opacity="0.4"/>
+
+      <g filter="url(#neonGlow)">
+        <path d="M 232 205 H 280 V 232 H 307 V 280 H 280 V 307 H 232 V 280 H 205 V 232 H 232 Z" 
+              fill="none" 
+              stroke="url(#glowGrad)" 
+              strokeWidth="8" 
+              strokeLinejoin="round"/>
+        
+        <path d="M 190 256 H 225 L 238 235 L 250 275 L 264 245 L 274 256 H 322" 
+              fill="none" 
+              stroke="#ffffff" 
+              strokeWidth="5" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"/>
+      </g>
+    </svg>
+  );
+};
+
+export default AssetDoctorIcon;
