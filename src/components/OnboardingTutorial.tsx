@@ -20,8 +20,8 @@ interface SlideData {
 
 const ONBOARDING_SLIDES: SlideData[] = [
   {
-    title: 'Smart Vault for Home & Vehicles',
-    subtitle: 'Consolidate all invoices, warranties, and insurance policies in one place',
+    title: 'सुरक्षित और स्मार्ट वॉल्ट',
+    subtitle: 'आप AssetDoctor के सुरक्षित और स्मार्ट वॉल्ट में प्रवेश कर चुके हैं।',
     description: 'Never search through paper drawers or buried emails again. AssetDoctor keeps your home appliances, gadgets, and vehicles organized with instant status tracking.',
     mascotState: 'welcome',
     icon: <ShieldCheck className="w-5 h-5 text-[#10B981]" />,
