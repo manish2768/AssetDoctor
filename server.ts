@@ -277,6 +277,24 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
   }
 });
 
+// Static sitemap.xml route with clean XML headers
+app.get('/sitemap.xml', (_req, res) => {
+  const publicSitemap = path.join(process.cwd(), 'public', 'sitemap.xml');
+  const distSitemap = path.join(process.cwd(), 'dist', 'sitemap.xml');
+  const filePath = require('fs').existsSync(distSitemap) ? distSitemap : publicSitemap;
+  res.header('Content-Type', 'application/xml; charset=utf-8');
+  res.sendFile(filePath);
+});
+
+// Static robots.txt route with clean text headers
+app.get('/robots.txt', (_req, res) => {
+  const publicRobots = path.join(process.cwd(), 'public', 'robots.txt');
+  const distRobots = path.join(process.cwd(), 'dist', 'robots.txt');
+  const filePath = require('fs').existsSync(distRobots) ? distRobots : publicRobots;
+  res.header('Content-Type', 'text/plain; charset=utf-8');
+  res.sendFile(filePath);
+});
+
 // Health check endpoint
 app.get('/api/health', (_req, res) => {
   res.json({ status: 'ok', app: 'AssetDoctor ServiVault' });
