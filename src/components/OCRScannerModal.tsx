@@ -508,38 +508,35 @@ export const OCRScannerModal: React.FC<OCRScannerModalProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="relative rounded-xl overflow-hidden bg-black flex items-center justify-center border border-slate-800">
-                      <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        muted
-                        className="w-full h-64 sm:h-80 object-cover"
-                      />
+                    <div className="relative w-full h-[65vh] sm:h-[500px] bg-black rounded-2xl overflow-hidden flex items-center justify-center border-2 border-emerald-500/30">
                       
-                      {/* Viewfinder overlay frame */}
-                      <div className="absolute inset-4 border-2 border-teal-400/40 rounded-lg pointer-events-none flex flex-col justify-between p-2">
-                        <div className="flex justify-between">
-                          <div className="w-4 h-4 border-t-2 border-l-2 border-teal-400"></div>
-                          <div className="w-4 h-4 border-t-2 border-r-2 border-teal-400"></div>
+                      {/* Camera Video Feed */}
+                      <video 
+                        ref={videoRef} 
+                        autoPlay 
+                        playsInline 
+                        muted
+                        className="w-full h-full object-cover"
+                      />
+
+                      {/* A4 Overlay / Guide Frame */}
+                      <div className="absolute inset-4 border-2 border-dashed border-emerald-400/70 rounded-lg pointer-events-none flex flex-col justify-between p-2">
+                        <div className="text-xs text-emerald-400 bg-black/60 px-2 py-1 rounded self-center backdrop-blur-sm font-bold">
+                          Align full bill inside frame
                         </div>
-                        <p className="text-[11px] font-medium text-teal-300/90 bg-slate-950/80 backdrop-blur-sm px-2.5 py-1 rounded-full text-center self-center border border-teal-500/30">
-                          Align bill or invoice within camera view
-                        </p>
-                        <div className="flex justify-between">
-                          <div className="w-4 h-4 border-b-2 border-l-2 border-teal-400"></div>
-                          <div className="w-4 h-4 border-b-2 border-r-2 border-teal-400"></div>
+                        <div className="text-[10px] text-gray-300 text-center bg-black/60 py-0.5 rounded backdrop-blur-sm font-medium">
+                          Ensure good lighting &amp; clear text
                         </div>
                       </div>
 
-                      <div className="absolute bottom-4 flex items-center gap-3">
-                        <button
+                      {/* Capture Button Floating Overlay */}
+                      <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+                        <button 
                           type="button"
                           onClick={capturePhoto}
-                          className="px-5 py-2.5 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-950 font-bold text-xs shadow-xl shadow-teal-500/30 flex items-center gap-2 transition-all cursor-pointer transform hover:scale-105"
+                          className="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black px-6 py-3 rounded-full flex items-center gap-2 shadow-xl shadow-emerald-500/30 active:scale-95 transition-transform cursor-pointer"
                         >
-                          <Camera className="w-4 h-4 stroke-[2.5]" />
-                          Snap Photo
+                          <Camera className="w-5 h-5 text-slate-950 stroke-[2.5]" /> Snap Photo
                         </button>
                       </div>
                     </div>
