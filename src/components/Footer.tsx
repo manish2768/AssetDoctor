@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { MessageCircle, AlertCircle, Heart } from 'lucide-react';
+import { MessageCircle, AlertCircle } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   const [showFeedbackModal, setShowFeedbackModal] = useState(false);
   const [feedbackText, setFeedbackText] = useState('');
 
   const handleWhatsAppSupport = () => {
-    const phoneNumber = "919876543210"; // WhatsApp support number
+    // मनीष भाई का WhatsApp नंबर जोड़ दिया गया है
+    const phoneNumber = "919918288299"; 
     const message = encodeURIComponent("नमस्ते! मुझे AssetDoctor ऐप में एक समस्या / सुझाव देना है:");
     window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
   };
