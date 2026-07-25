@@ -1,0 +1,718 @@
+import React, { useState } from 'react';
+import { 
+  ShieldCheck, 
+  Sparkles, 
+  ArrowRight, 
+  CheckCircle2, 
+  Camera, 
+  Bell, 
+  TrendingDown, 
+  Car, 
+  Lock, 
+  FileSpreadsheet, 
+  Download, 
+  User, 
+  Zap, 
+  Star, 
+  HelpCircle,
+  ExternalLink,
+  ChevronRight,
+  Shield,
+  Smartphone,
+  Clock,
+  Award,
+  Key,
+  Database,
+  EyeOff,
+  Quote,
+  X,
+  Share,
+  PlusSquare
+} from 'lucide-react';
+import { AssetDoctorLogo } from './AssetDoctorLogo';
+
+interface LandingPageProps {
+  isLoggedIn: boolean;
+  userName?: string;
+  onOpenAuth: (mode: 'SIGN_IN' | 'SIGN_UP') => void;
+  onGoToDashboard: () => void;
+  onOpenAboutUs: () => void;
+  onOpenContactUs: () => void;
+  onOpenPrivacyPolicy: () => void;
+}
+
+export const LandingPage: React.FC<LandingPageProps> = ({
+  isLoggedIn,
+  userName,
+  onOpenAuth,
+  onGoToDashboard,
+  onOpenAboutUs,
+  onOpenContactUs,
+  onOpenPrivacyPolicy
+}) => {
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [showPwaModal, setShowPwaModal] = useState(false);
+
+  const toggleFaq = (index: number) => {
+    setActiveFaq(activeFaq === index ? null : index);
+  };
+
+  const handlePwaInstall = async () => {
+    const promptEvent = (window as any).deferredPwaPrompt;
+    if (promptEvent) {
+      promptEvent.prompt();
+      const choice = await promptEvent.userChoice;
+      if (choice?.outcome === 'accepted') {
+        (window as any).deferredPwaPrompt = null;
+      }
+    } else {
+      setShowPwaModal(true);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-slate-950">
+      
+      {/* 1. Header / Navbar */}
+      <header className="sticky top-0 z-40 bg-[#07090E]/90 backdrop-blur-xl border-b border-slate-800/80 px-4 lg:px-8 py-3.5">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          
+          {/* Logo & Brand */}
+          <div className="flex items-center gap-3">
+            <AssetDoctorLogo size="md" />
+            <span className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <ShieldCheck className="w-3.5 h-3.5" /> India's #1 Asset Vault
+            </span>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6 text-xs font-bold text-slate-300">
+            <a href="#features" className="hover:text-emerald-400 transition">Features</a>
+            <a href="#security" className="hover:text-emerald-400 transition">Security</a>
+            <a href="#reviews" className="hover:text-emerald-400 transition">User Reviews</a>
+            <a href="#how-it-works" className="hover:text-emerald-400 transition">How It Works</a>
+            <a href="#faq" className="hover:text-emerald-400 transition">FAQ</a>
+            <button onClick={onOpenAboutUs} className="hover:text-emerald-400 transition cursor-pointer">About Us</button>
+          </nav>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-3">
+            {isLoggedIn ? (
+              <button
+                onClick={onGoToDashboard}
+                id="landing-go-to-dashboard-btn"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer flex items-center gap-1.5"
+              >
+                <span>Go to Vault</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={() => onOpenAuth('SIGN_IN')}
+                  id="landing-login-btn"
+                  className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-slate-200 font-bold text-xs transition cursor-pointer"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => onOpenAuth('SIGN_UP')}
+                  id="landing-register-btn"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer flex items-center gap-1.5"
+                >
+                  <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
+                  <span>Create Free Vault</span>
+                </button>
+              </>
+            )}
+          </div>
+
+        </div>
+      </header>
+
+      {/* 2. Hero Section */}
+      <section className="relative pt-12 pb-20 px-4 lg:px-8 overflow-hidden">
+        {/* Glow Effects */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-gradient-to-tr from-emerald-500/15 via-teal-500/10 to-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
+          
+          {/* Top Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-800 shadow-xl text-xs font-extrabold text-slate-300 animate-fade-in">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
+            <span className="text-emerald-400">AI-POWERED WARRANTY & ASSET MANAGER</span>
+            <span className="text-slate-600">•</span>
+            <span className="text-slate-400">100% Encrypted & Private</span>
+          </div>
+
+          {/* Headline */}
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
+            Never Lose a <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Warranty, Invoice, or Asset Value</span> Again.
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed font-normal">
+            AssetDoctor is India’s premier digital vault for gadgets, home appliances, vehicles, and valuables. Store bills with AI OCR scanning, track automated warranty expiration alerts, and calculate real-time asset depreciation.
+          </p>
+
+          {/* Hero CTAs */}
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={() => {
+                if (isLoggedIn) {
+                  onGoToDashboard();
+                } else {
+                  onOpenAuth('SIGN_UP');
+                }
+              }}
+              id="hero-primary-cta"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm shadow-2xl shadow-emerald-500/30 hover:scale-[1.03] active:scale-[0.98] transition cursor-pointer flex items-center justify-center gap-2.5"
+            >
+              <Sparkles className="w-5 h-5 fill-slate-950" />
+              <span>{isLoggedIn ? 'Launch Your Dashboard' : 'Open Your Free Asset Vault'}</span>
+              <ArrowRight className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={handlePwaInstall}
+              id="hero-pwa-install-cta"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold text-sm transition cursor-pointer flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/10"
+            >
+              <Download className="w-4 h-4 text-emerald-400 stroke-[2.5]" />
+              <span>Download App / Install PWA</span>
+            </button>
+
+            <button
+              onClick={() => {
+                if (isLoggedIn) {
+                  onGoToDashboard();
+                } else {
+                  onOpenAuth('SIGN_IN');
+                }
+              }}
+              id="hero-secondary-cta"
+              className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-900 hover:bg-slate-800/80 border border-slate-800 hover:border-slate-700 text-slate-200 font-bold text-sm transition cursor-pointer flex items-center justify-center gap-2"
+            >
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>{isLoggedIn ? 'View Saved Items' : 'Existing User Sign In'}</span>
+            </button>
+          </div>
+
+          {/* Trust Highlights */}
+          <div className="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-400 font-medium">
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>Zero-Leak Local Vault</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>Instant AI Bill Reader</span>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>Expiry SMS & Email Reminders</span>
+            </span>
+          </div>
+
+          {/* App Preview Mockup Card */}
+          <div className="mt-10 p-2 sm:p-4 rounded-3xl bg-slate-900/80 border border-slate-800 shadow-2xl relative max-w-4xl mx-auto overflow-hidden text-left">
+            <div className="bg-slate-950 rounded-2xl p-4 sm:p-6 border border-slate-800/80 space-y-4">
+              
+              {/* Fake App Bar Header */}
+              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-amber-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+                  <span className="ml-2 text-xs font-mono text-slate-400">AssetDoctor Vault • Live Preview</span>
+                </div>
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  AES-256 Encrypted
+                </span>
+              </div>
+
+              {/* Fake Cards Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+                  <span className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Total Vault Assets</span>
+                  <p className="text-xl font-black text-white font-mono">₹2,84,500</p>
+                  <span className="text-[10px] text-emerald-400 font-bold flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> 4 Assets Vaulted
+                  </span>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-slate-900 border border-amber-500/30 space-y-1">
+                  <span className="text-[10px] font-extrabold uppercase text-amber-400 tracking-wider">Warranty Expiring Soon</span>
+                  <p className="text-xl font-black text-amber-300 font-mono">1 Item (14 Days Left)</p>
+                  <span className="text-[10px] text-amber-400 font-bold">LG Split Air Conditioner</span>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-slate-900 border border-slate-800 space-y-1">
+                  <span className="text-[10px] font-extrabold uppercase text-slate-400 tracking-wider">Vehicle & FASTag</span>
+                  <p className="text-xl font-black text-teal-300 font-mono">TVS Ronin • Active</p>
+                  <span className="text-[10px] text-slate-400 font-bold">Insurance Renewal in Sep 2026</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* 3. Key Features Section */}
+      <section id="features" className="py-16 px-4 lg:px-8 bg-slate-950 border-y border-slate-900">
+        <div className="max-w-6xl mx-auto space-y-12">
+          
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-xs font-black uppercase tracking-widest text-emerald-400">Power Features</span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Everything You Need to Manage & Protect Your Assets
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Built specifically for Indian households, vehicle owners, and gadget enthusiasts.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* Feature 1 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <Camera className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">AI OCR Invoice Reader</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Snap or upload any bill photo. Our Gemini AI extracts purchase date, model, brand name, price, and warranty duration in seconds.
+              </p>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400">
+                <Bell className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">Automated Expiry Alerts</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Get proactive notifications before your warranty or insurance expires so you never miss a free repair or policy renewal.
+              </p>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400">
+                <TrendingDown className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">Depreciation Tracker</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Know the current resale value and value depreciation curves of your electronics, laptops, bikes, and home appliances over time.
+              </p>
+            </div>
+
+            {/* Feature 4 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+                <Car className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">FASTag & Vehicle Docs</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Store RC copies, insurance policies, pollution certificates, and check FASTag status for seamless emergency road access.
+              </p>
+            </div>
+
+            {/* Feature 5 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+                <Lock className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">Encrypted Private Storage</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Your invoices and personal serial numbers stay safely saved locally on your device and encrypted in your personal cloud.
+              </p>
+            </div>
+
+            {/* Feature 6 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                <FileSpreadsheet className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">One-Click PDF/CSV Export</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Download a clean PDF backup dossier or spreadsheet of all your assets for insurance claims or resale documentation.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 4. Bank-Grade Security Section */}
+      <section id="security" className="py-20 px-4 lg:px-8 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 border-b border-slate-800/80 relative overflow-hidden">
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto space-y-12 relative z-10">
+          
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Uncompromising Privacy</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Bank-Grade Security Architecture
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400">
+              Your financial receipts, serial numbers, and home asset records deserve military-grade privacy safeguards.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {/* Security Pillar 1 */}
+            <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-left hover:border-emerald-500/40 transition">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-md">
+                <Key className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">256-Bit AES Encryption</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                All uploaded bill PDFs, images, serial numbers, and pricing logs are protected with military-grade 256-bit encryption.
+              </p>
+            </div>
+
+            {/* Security Pillar 2 */}
+            <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-left hover:border-emerald-500/40 transition">
+              <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 shadow-md">
+                <EyeOff className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">Zero Data Selling</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                We strictly guarantee that your invoice data, purchase history, and personal contact info will never be sold to third-party advertisers.
+              </p>
+            </div>
+
+            {/* Security Pillar 3 */}
+            <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-left hover:border-emerald-500/40 transition">
+              <div className="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-md">
+                <Database className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">Dual Local & Cloud Backup</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Enjoy offline-first IndexedDB storage on your device paired with optional encrypted Firebase Cloud synchronization for zero loss.
+              </p>
+            </div>
+
+            {/* Security Pillar 4 */}
+            <div className="p-6 rounded-3xl bg-slate-900/90 border border-slate-800 space-y-3 text-left hover:border-emerald-500/40 transition">
+              <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-md">
+                <Shield className="w-6 h-6" />
+              </div>
+              <h3 className="text-base font-bold text-white">Zero-Knowledge Storage</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Your private serial numbers and warranty keys remain fully user-controlled with restricted cryptographic access boundaries.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. Testimonials / User Reviews Section */}
+      <section id="reviews" className="py-20 px-4 lg:px-8 bg-slate-950 border-b border-slate-900">
+        <div className="max-w-6xl mx-auto space-y-12">
+          
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <span className="text-xs font-black uppercase tracking-widest text-amber-400 flex items-center justify-center gap-1.5">
+              <Star className="w-4 h-4 fill-amber-400" />
+              <span>Customer Success Stories</span>
+            </span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Trusted by 10,000+ Asset Owners Across India
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-400">
+              See how AssetDoctor helps families and professionals save money on repairs and warranty claims.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            {/* Review 1 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 text-left flex flex-col justify-between relative overflow-hidden group hover:border-amber-500/40 transition">
+              <Quote className="w-8 h-8 text-amber-500/20 absolute top-4 right-4 pointer-events-none" />
+              <div className="space-y-3">
+                <div className="flex items-center gap-1 text-amber-400">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed italic">
+                  "When my LG Split AC motherboard failed 23 months after purchase, AssetDoctor sent an alert 10 days prior. Saved me ₹14,500 in repair charges!"
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-white">Rajesh Sharma</h4>
+                  <span className="text-[10px] text-slate-400">Tech Lead • Bengaluru, KA</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Verified User
+                </span>
+              </div>
+            </div>
+
+            {/* Review 2 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 text-left flex flex-col justify-between relative overflow-hidden group hover:border-amber-500/40 transition">
+              <Quote className="w-8 h-8 text-amber-500/20 absolute top-4 right-4 pointer-events-none" />
+              <div className="space-y-3">
+                <div className="flex items-center gap-1 text-amber-400">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed italic">
+                  "Uploading Amazon & Flipkart invoices takes 2 seconds with AI OCR. Best asset vault app for keeping all home appliance bills in one organized place."
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-white">Ananya Verma</h4>
+                  <span className="text-[10px] text-slate-400">Architect • Mumbai, MH</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Verified User
+                </span>
+              </div>
+            </div>
+
+            {/* Review 3 */}
+            <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 text-left flex flex-col justify-between relative overflow-hidden group hover:border-amber-500/40 transition">
+              <Quote className="w-8 h-8 text-amber-500/20 absolute top-4 right-4 pointer-events-none" />
+              <div className="space-y-3">
+                <div className="flex items-center gap-1 text-amber-400">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-amber-400" />
+                  ))}
+                </div>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed italic">
+                  "Managed my TVS Ronin bike insurance renewal and FASTag with RC document storage. Super clean interface and extremely fast PDF exports."
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+                <div>
+                  <h4 className="text-xs font-bold text-white">Vikramaditya Singh</h4>
+                  <span className="text-[10px] text-slate-400">Business Owner • New Delhi</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-black uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Verified User
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. How It Works Section */}
+      <section id="how-it-works" className="py-16 px-4 lg:px-8">
+        <div className="max-w-5xl mx-auto space-y-12 text-center">
+          
+          <div className="space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-teal-400">Simple 3-Step Process</span>
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white">How AssetDoctor Works</h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            
+            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 space-y-3 relative">
+              <div className="w-8 h-8 rounded-full bg-emerald-500 text-slate-950 font-black text-sm flex items-center justify-center">
+                1
+              </div>
+              <h3 className="text-base font-bold text-white">Upload Invoice or Enter Details</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Snap a picture of your warranty card, Amazon bill, or store invoice. You can also manually enter asset brand & purchase price.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 space-y-3 relative">
+              <div className="w-8 h-8 rounded-full bg-teal-400 text-slate-950 font-black text-sm flex items-center justify-center">
+                2
+              </div>
+              <h3 className="text-base font-bold text-white">AI Categorizes & Tracks Warranty</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                AssetDoctor automatically calculates warranty validity, sets up renewal timers, and tracks estimated market depreciation.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-slate-900/60 border border-slate-800 space-y-3 relative">
+              <div className="w-8 h-8 rounded-full bg-cyan-400 text-slate-950 font-black text-sm flex items-center justify-center">
+                3
+              </div>
+              <h3 className="text-base font-bold text-white">Get Timely Alerts & Claim Support</h3>
+              <p className="text-xs text-slate-400 leading-relaxed">
+                Receive warning alerts before expiration and access brand support toll-free numbers directly for hassle-free repairs.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 7. FAQ Section */}
+      <section id="faq" className="py-16 px-4 lg:px-8 bg-slate-950 border-t border-slate-900">
+        <div className="max-w-3xl mx-auto space-y-8">
+          
+          <div className="text-center space-y-2">
+            <span className="text-xs font-black uppercase tracking-widest text-emerald-400">Got Questions?</span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-3">
+            
+            {[
+              {
+                q: "Is AssetDoctor free to use?",
+                a: "Yes! AssetDoctor is 100% free to use for personal asset tracking, bill scanning, and warranty alerts."
+              },
+              {
+                q: "Where is my invoice data stored?",
+                a: "Your assets are stored privately on your local browser/device using IndexedDB with optional end-to-end encrypted backup in Firebase."
+              },
+              {
+                q: "How does the AI OCR scanner work?",
+                a: "Simply take a picture of any invoice or warranty card. Gemini AI extracts the purchase date, brand, price, and warranty duration automatically."
+              },
+              {
+                q: "Can I export my asset list for insurance claims?",
+                a: "Yes! You can export your full asset vault into a structured PDF document or CSV file with one click."
+              }
+            ].map((faq, idx) => (
+              <div 
+                key={idx}
+                className="p-4 rounded-2xl bg-slate-900 border border-slate-800 transition cursor-pointer"
+                onClick={() => toggleFaq(idx)}
+              >
+                <div className="flex items-center justify-between font-bold text-sm text-white">
+                  <span>{faq.q}</span>
+                  <ChevronRight className={`w-4 h-4 text-emerald-400 transition-transform ${activeFaq === idx ? 'rotate-90' : ''}`} />
+                </div>
+                {activeFaq === idx && (
+                  <p className="mt-2 text-xs text-slate-400 pt-2 border-t border-slate-800/80 leading-relaxed">
+                    {faq.a}
+                  </p>
+                )}
+              </div>
+            ))}
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 8. Final CTA Section */}
+      <section className="py-16 px-4 lg:px-8 text-center bg-gradient-to-b from-slate-950 to-[#07090E]">
+        <div className="max-w-3xl mx-auto p-8 rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl space-y-6 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+          
+          <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+            Start Securing Your Valuables Today
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-300">
+            Join thousands of users across India protecting their electronics, vehicles, and warranties in one secure vault.
+          </p>
+
+          <button
+            onClick={() => {
+              if (isLoggedIn) {
+                onGoToDashboard();
+              } else {
+                onOpenAuth('SIGN_UP');
+              }
+            }}
+            id="landing-final-cta-btn"
+            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 text-slate-950 font-black text-sm shadow-xl shadow-emerald-500/20 hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer inline-flex items-center gap-2"
+          >
+            <Sparkles className="w-5 h-5 fill-slate-950" />
+            <span>{isLoggedIn ? 'Go To Your Asset Dashboard' : 'Open Free Vault Now'}</span>
+          </button>
+        </div>
+      </section>
+
+      {/* 9. Footer */}
+      <footer className="mt-auto py-8 px-4 lg:px-8 border-t border-slate-900 text-xs text-slate-500 bg-slate-950">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+          <div className="flex items-center gap-2">
+            <AssetDoctorLogo size="sm" />
+            <span>© {new Date().getFullYear()} AssetDoctor. All rights reserved.</span>
+          </div>
+
+          <div className="flex items-center gap-4 text-slate-400 font-medium">
+            <button onClick={onOpenAboutUs} className="hover:text-emerald-400 transition cursor-pointer">About Us</button>
+            <button onClick={onOpenContactUs} className="hover:text-emerald-400 transition cursor-pointer">Contact Us</button>
+            <button onClick={onOpenPrivacyPolicy} className="hover:text-emerald-400 transition cursor-pointer">Privacy Policy</button>
+          </div>
+        </div>
+      </footer>
+
+      {/* PWA Installation Instructions Modal */}
+      {showPwaModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+          <div className="relative w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-2xl text-center space-y-4">
+            <button
+              onClick={() => setShowPwaModal(false)}
+              className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="w-14 h-14 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
+              <Smartphone className="w-7 h-7" />
+            </div>
+
+            <div>
+              <h3 className="text-base font-bold text-white">
+                Install AssetDoctor App
+              </h3>
+              <p className="text-xs text-slate-400 mt-1">
+                Install AssetDoctor directly onto your home screen for instant offline bill access:
+              </p>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-left space-y-3 text-xs text-slate-300">
+              <div className="flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0 text-[10px]">
+                  1
+                </span>
+                <span>Open your browser menu (tap <strong>Share</strong> on Safari or <strong>Three Dots</strong> on Chrome).</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0 text-[10px]">
+                  2
+                </span>
+                <span>Select <strong>'Add to Home Screen'</strong> (<PlusSquare className="w-3.5 h-3.5 inline text-emerald-400" />).</span>
+              </div>
+              <div className="flex items-start gap-2.5">
+                <span className="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0 text-[10px]">
+                  3
+                </span>
+                <span>Launch the AssetDoctor app anytime right from your device homescreen!</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowPwaModal(false)}
+              className="w-full py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-bold text-xs transition-colors cursor-pointer"
+            >
+              Got It!
+            </button>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+};
