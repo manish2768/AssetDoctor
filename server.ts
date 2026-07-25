@@ -24,6 +24,17 @@ if (process.env.GEMINI_API_KEY) {
   });
 }
 
+// Basic CORS headers
+app.use((_req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  if (_req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // OCR Receipt Scanning Endpoint
 app.post('/api/scan-receipt', async (req, res) => {
   try {
@@ -125,7 +136,7 @@ app.post('/api/scan-receipt', async (req, res) => {
       });
     }
 
-    // Call Gemini 3.6 Flash for OCR parsing
+    // Call Gemini Flash for OCR parsing
     const parts: any[] = [];
 
     if (base64Image) {
@@ -174,39 +185,48 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
 
     parts.push({ text: promptText });
 
-    const response = await aiClient.models.generateContent({
-      model: 'gemini-3.6-flash',
-      contents: { parts },
-      config: {
-        responseMimeType: 'application/json',
-        responseSchema: {
-          type: Type.OBJECT,
-          properties: {
-            vendor: { type: Type.STRING },
-            purchaseDate: { type: Type.STRING },
-            totalAmount: { type: Type.NUMBER },
-            gstin: { type: Type.STRING },
-            items: {
-              type: Type.ARRAY,
+    let response;
+    try {
+      response = await aiClient.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: { parts },
+        config: {
+          responseMimeType: 'application/json',
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              vendor: { type: Type.STRING },
+              purchaseDate: { type: Type.STRING },
+              totalAmount: { type: Type.NUMBER },
+              gstin: { type: Type.STRING },
               items: {
-                type: Type.OBJECT,
-                properties: {
-                  itemName: { type: Type.STRING },
-                  brand: { type: Type.STRING },
-                  price: { type: Type.NUMBER },
-                  warrantyMonths: { type: Type.NUMBER },
-                  category: { type: Type.STRING },
-                  serialNumber: { type: Type.STRING },
-                  notes: { type: Type.STRING },
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    itemName: { type: Type.STRING },
+                    brand: { type: Type.STRING },
+                    price: { type: Type.NUMBER },
+                    warrantyMonths: { type: Type.NUMBER },
+                    category: { type: Type.STRING },
+                    serialNumber: { type: Type.STRING },
+                    notes: { type: Type.STRING },
+                  },
+                  required: ['itemName', 'price', 'category'],
                 },
-                required: ['itemName', 'price', 'category'],
               },
             },
+            required: ['items'],
           },
-          required: ['items'],
         },
-      },
-    });
+      });
+    } catch (modelError) {
+      console.warn('Gemini 2.5 Flash failed, attempting fallback to gemini-1.5-flash:', modelError);
+      response = await aiClient.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: { parts },
+      });
+    }
 
     const parsedText = response.text || '{}';
     const jsonResult = JSON.parse(parsedText);

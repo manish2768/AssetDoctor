@@ -54,31 +54,37 @@ export const AboutUsModal: React.FC<AboutUsModalProps> = ({ isOpen, onClose }) =
         {/* Modal Content Body */}
         <div className="p-6 space-y-6 overflow-y-auto custom-scrollbar flex-1">
           
-          {/* 🌟 1. PROMINENT INSPIRATIONAL ORIGIN SECTION */}
-          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950/40 via-slate-900 to-emerald-950/40 p-5 border-2 border-amber-500/30 shadow-xl">
+          {/* 🌟 1. PROMINENT INSPIRATIONAL ORIGIN SECTION & FOUNDER SPOTLIGHT */}
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-950/60 via-slate-900 to-emerald-950/60 p-6 border-2 border-amber-500/50 shadow-2xl shadow-amber-500/10">
             {/* Ambient Background Badge */}
-            <div className="absolute top-3 right-3 bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 text-[10px] font-black uppercase px-2.5 py-1 rounded-full flex items-center gap-1 shadow">
-              <Sparkles className="w-3 h-3 fill-current" />
-              <span>Inspirational Origin</span>
+            <div className="flex items-center justify-between mb-4 border-b border-amber-500/20 pb-3">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-black uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                <span>Young Innovator &amp; Founder Spotlight</span>
+              </div>
+              <span className="text-[11px] font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">
+                Aged 14 • Visionary
+              </span>
             </div>
 
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-400 to-amber-600 text-slate-950 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/20 mt-1">
-                <Lightbulb className="w-7 h-7" />
+            <div className="flex flex-col sm:flex-row items-start gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-950 flex items-center justify-center shrink-0 shadow-lg shadow-amber-500/30 font-black text-xl">
+                <Lightbulb className="w-8 h-8 text-slate-950" />
               </div>
 
-              <div className="space-y-2 pr-24">
-                <h3 className="text-base font-black text-amber-300 tracking-wide">
-                  The Story Behind AssetDoctor
+              <div className="space-y-3 flex-1">
+                <h3 className="text-lg font-black text-amber-300 tracking-tight">
+                  The Story &amp; Vision of Ashutosh Rai
                 </h3>
-                <p className="text-xs text-slate-200 leading-relaxed">
-                  AssetDoctor was born from a brilliant idea by <strong className="text-amber-300 font-black underline decoration-amber-500/50 underline-offset-2">Asutosh Rai</strong>, a passionate 14-year-old innovator who realized how often families lose track of important vehicle documents, appliance warranties, and critical expiry dates.
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
+                  <strong>Ashutosh Rai</strong>, a 14-year-old student and tech-enthusiast, founded <strong>AssetDoctor (ServiVault)</strong> to solve a problem that plagues millions of households: lost paper invoices, expired warranties, and misplaced vehicle documents.
                 </p>
-                <div className="p-3 bg-slate-950/70 rounded-xl border border-amber-500/20 text-slate-300 text-[11px] italic leading-normal flex items-start gap-2">
-                  <Heart className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                  <span>
-                    &ldquo;His vision was to build a single <strong>&apos;Smart Health & Care Card&apos;</strong> for every home asset, eliminating lost receipts and unexpected repair bills forever.&rdquo;
-                  </span>
+                <div className="p-4 bg-slate-950/80 rounded-2xl border border-amber-500/30 text-amber-100 text-xs italic leading-relaxed shadow-inner">
+                  <div className="flex items-center gap-2 mb-1.5 text-amber-400 font-semibold not-italic">
+                    <Heart className="w-4 h-4 text-rose-400 fill-rose-400" />
+                    <span>The Founding Vision</span>
+                  </div>
+                  &ldquo;Every family deserves a <strong>&apos;Smart Health &amp; Care Card&apos;</strong> for their valuable possessions. No more losing money on repairs or hunting for invoices when things break down.&rdquo;
                 </div>
               </div>
             </div>
