@@ -30,6 +30,8 @@ import { DepreciationTrackerWidget } from './components/DepreciationTrackerWidge
 import { FastagCheckerWidget } from './components/FastagCheckerWidget';
 import { LandingPage } from './components/LandingPage';
 import { Footer } from './components/Footer';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Login } from './components/Login';
 import { saveAssetToCloud } from './services/assetCloudService';
 import {
   getAllAssetsFromDB,
@@ -44,7 +46,8 @@ import { CheckCircle2, Camera, Sparkles, ArrowRight, Bot } from 'lucide-react';
 
 const STORAGE_KEY = 'assetdoctor_servivault_assets';
 
-export default function App() {
+const MainContent: React.FC = () => {
+  const { user, logout: firebaseLogout } = useAuth();
   const [assets, setAssets] = useState<Asset[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -361,7 +364,12 @@ export default function App() {
     showToast(`Welcome ${userData.name ? userData.name.split(' ')[0] : 'to AssetDoctor'}! Your session is active.`);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await firebaseLogout();
+    } catch (e) {
+      console.warn('Firebase logout notice:', e);
+    }
     setIsLoggedIn(false);
     try {
       localStorage.setItem('assetdoctor_is_logged_in', 'false');
@@ -772,5 +780,13 @@ export default function App() {
       </button>
 
     </div>
+  );
+};
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainContent />
+    </AuthProvider>
   );
 }
