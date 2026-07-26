@@ -185,7 +185,21 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
     }
 
     const parsedText = response.text || '{}';
-    const jsonResult = JSON.parse(parsedText);
+    let jsonResult: any = {};
+    try {
+      const jsonMatch = parsedText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        jsonResult = JSON.parse(jsonMatch[0]);
+      } else {
+        jsonResult = JSON.parse(parsedText);
+      }
+    } catch (parseErr) {
+      console.error('Failed to parse Gemini response as JSON:', parseErr, 'Raw Text:', parsedText);
+      return res.status(400).json({
+        success: false,
+        error: 'Failed to scan document. Could not parse structured invoice data from Gemini AI.',
+      });
+    }
 
     const extractedItems = (jsonResult.items || []).map((item: any, idx: number) => ({
       itemName: item.itemName || `Scanned Item ${idx + 1}`,
