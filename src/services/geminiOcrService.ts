@@ -111,6 +111,9 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
   }
 }
 
+export const processDocumentWithGemini = processDocumentOCR;
+
 export default {
   processDocumentOCR,
+  processDocumentWithGemini,
 };
