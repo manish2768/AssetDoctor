@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FileText, Bolt, Smartphone, Droplets, Zap, ShieldCheck, ArrowRight, X, CheckCircle2, IndianRupee } from 'lucide-react';
+import { AutoArchivePayment } from './AutoArchivePayment';
 
 interface UtilityPaymentHubProps {
   onShowToast: (message: string) => void;
@@ -103,7 +104,17 @@ export const UtilityPaymentHub: React.FC<UtilityPaymentHubProps> = ({ onShowToas
       </div>
 
       {/* Payment Processing Modal */}
-      {activeModal && (
+      {activeModal === 'Insurance' ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
+          <AutoArchivePayment
+            assetName="TVS Ronin"
+            category="Vehicles"
+            premiumAmount={3450}
+            onClose={() => setActiveModal(null)}
+            onShowToast={onShowToast}
+          />
+        </div>
+      ) : activeModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
           <div className="relative w-full max-w-md rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl p-6 space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
