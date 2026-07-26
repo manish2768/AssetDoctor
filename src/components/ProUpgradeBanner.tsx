@@ -7,7 +7,12 @@ interface ProUpgradeBannerProps {
 
 export const ProUpgradeBanner: React.FC<ProUpgradeBannerProps> = ({ onShowToast }) => {
   const handleUpgrade = () => {
-    onShowToast('🎉 Welcome to AssetDoctor Pro! Instant WhatsApp Alerts activated.');
+    const confirmUpgrade = window.confirm(
+      "AssetDoctor Smart Shield Pro Upgrade:\n\n- ₹9/महीना\n- Direct WhatsApp Expiry Alerts\n- Cloud Backup & Fast Vault Sync\n\nक्या आप अपग्रेड करना चाहते हैं?"
+    );
+    if (confirmUpgrade) {
+      onShowToast('💳 Payment Gateway (Razorpay/UPI) Opening... Subscribing to ₹9/Mo Pro!');
+    }
   };
 
   return (

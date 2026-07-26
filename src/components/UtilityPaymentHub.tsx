@@ -46,20 +46,9 @@ export const UtilityPaymentHub: React.FC<UtilityPaymentHubProps> = ({ onShowToas
     },
   ];
 
-  const handleProcessPayment = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!accountNumber.trim()) {
-      onShowToast('Please enter a valid Consumer / Policy Number');
-      return;
-    }
-    setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      onShowToast(`Payment request for ${activeModal} submitted. Receipt auto-archived to Vault!`);
-      setActiveModal(null);
-      setAccountNumber('');
-      setAmount('');
-    }, 1200);
+  const handleOpenPaymentModal = (serviceName: string) => {
+    setActiveModal(serviceName);
+    onShowToast(`⚡ ${serviceName} बिल पेमेंट सिस्टम लोड हो रहा है... (पेमेंट सफल होने पर PDF रसीद एसेट फोल्डर में ऑटो-सेव होगी)`);
   };
 
   return (
@@ -89,7 +78,7 @@ export const UtilityPaymentHub: React.FC<UtilityPaymentHubProps> = ({ onShowToas
         {paymentOptions.map((opt) => (
           <button
             key={opt.id}
-            onClick={() => setActiveModal(opt.id)}
+            onClick={() => handleOpenPaymentModal(opt.id)}
             className={`p-4 rounded-2xl ${opt.bg} border hover:brightness-125 transition-all text-left flex flex-col justify-between cursor-pointer group shadow-lg`}
           >
             <div className="flex items-center justify-between mb-3">
