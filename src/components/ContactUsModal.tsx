@@ -24,8 +24,8 @@ export const ContactUsModal: React.FC<ContactUsModalProps> = ({
   onClose,
   onShowToast,
 }) => {
-  const [name, setName] = useState('Manish');
-  const [email, setEmail] = useState('hansgeetglobal@gmail.com');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('9918288299');
   const [subject, setSubject] = useState('General Query');
   const [message, setMessage] = useState('');
@@ -98,14 +98,14 @@ export const ContactUsModal: React.FC<ContactUsModalProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               {/* Email Support Card */}
               <a
-                href="mailto:hansgeetglobal@gmail.com"
+                href="mailto:support@assetdoctor.in?subject=AssetDoctor%20Support%20Request"
                 className="p-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 flex flex-col items-center text-center transition group shadow-md"
               >
                 <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-400 mb-2 group-hover:scale-110 transition-transform">
                   <Mail className="w-5 h-5" />
                 </div>
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Email Support</span>
-                <span className="text-xs font-bold text-white mt-1 break-all">hansgeetglobal@gmail.com</span>
+                <span className="text-xs font-bold text-white mt-1 break-all">support@assetdoctor.in</span>
                 <span className="text-[10px] text-emerald-400 font-semibold mt-1.5 flex items-center gap-1">
                   Click to mail <ExternalLink className="w-2.5 h-2.5" />
                 </span>
