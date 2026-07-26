@@ -508,25 +508,21 @@ export const OCRScannerModal: React.FC<OCRScannerModalProps> = ({
                       </div>
                     </div>
                   ) : (
-                    <div className="relative w-full h-[65vh] sm:h-[500px] bg-black rounded-2xl overflow-hidden flex items-center justify-center border-2 border-emerald-500/30">
-                      
-                      {/* Camera Video Feed */}
+                    {/* Camera Viewfinder Box */}
+                    <div className="relative w-full max-w-md mx-auto aspect-[3/4] bg-slate-950 rounded-2xl overflow-hidden border-2 border-emerald-500/50 shadow-2xl">
                       <video 
                         ref={videoRef} 
                         autoPlay 
                         playsInline 
                         muted
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain bg-black" 
                       />
-
-                      {/* A4 Overlay / Guide Frame */}
-                      <div className="absolute inset-4 border-2 border-dashed border-emerald-400/70 rounded-lg pointer-events-none flex flex-col justify-between p-2">
-                        <div className="text-xs text-emerald-400 bg-black/60 px-2 py-1 rounded self-center backdrop-blur-sm font-bold">
-                          Align full bill inside frame
-                        </div>
-                        <div className="text-[10px] text-gray-300 text-center bg-black/60 py-0.5 rounded backdrop-blur-sm font-medium">
-                          Ensure good lighting &amp; clear text
-                        </div>
+                      
+                      {/* Document Alignment Frame */}
+                      <div className="absolute inset-4 border-2 border-dashed border-emerald-400/80 rounded-xl pointer-events-none flex items-start justify-center pt-4">
+                        <span className="bg-slate-900/90 text-emerald-300 text-xs px-3 py-1 rounded-full border border-emerald-500/40 backdrop-blur-md font-semibold">
+                          Align full bill or policy document inside frame
+                        </span>
                       </div>
 
                       {/* Capture Button Floating Overlay */}
