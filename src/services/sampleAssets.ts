@@ -1,5 +1,3 @@
-import { saveAssetToCloud } from './assetCloudService';
-
 export interface SampleAsset {
   name: string;
   category: string;
@@ -17,4 +15,3 @@ export const SAMPLE_ASSETS: SampleAsset[] = [];
 export const loadDemoAssets = async (_userId: string) => {
   return true;
 };
-
