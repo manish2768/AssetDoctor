@@ -33,6 +33,8 @@ import { Footer } from './components/Footer';
 import { SecurityLockScreen } from './components/SecurityLockScreen';
 import { AssetPassportModal } from './components/AssetPassportModal';
 import { AssetPostcardModal } from './components/AssetPostcardModal';
+import { UtilityPaymentHub } from './components/UtilityPaymentHub';
+import { ProUpgradeBanner } from './components/ProUpgradeBanner';
 import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './components/Login';
@@ -609,6 +611,12 @@ const MainContent: React.FC = () => {
                 </div>
               )}
             </div>
+
+            {/* Pro Upgrade Banner: ₹9/mo Instant WhatsApp & SMS Expiry Alerts */}
+            <ProUpgradeBanner onShowToast={(msg) => showToast(msg)} />
+
+            {/* Quick Pay & Auto-Archive Utility Payment Hub (BBPS + Recharges) */}
+            <UtilityPaymentHub onShowToast={(msg) => showToast(msg)} />
 
             {/* FASTag Status & Depreciation Widgets */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
