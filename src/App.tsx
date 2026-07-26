@@ -33,6 +33,7 @@ import { Footer } from './components/Footer';
 import { SecurityLockScreen } from './components/SecurityLockScreen';
 import { AssetPassportModal } from './components/AssetPassportModal';
 import { AssetPostcardModal } from './components/AssetPostcardModal';
+import { Analytics } from '@vercel/analytics/react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './components/Login';
 import { saveAssetToCloud } from './services/assetCloudService';
@@ -844,6 +845,7 @@ export default function App() {
   return (
     <AuthProvider>
       <MainContent />
+      <Analytics />
     </AuthProvider>
   );
 }
