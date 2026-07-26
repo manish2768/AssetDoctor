@@ -93,3 +93,31 @@ input, textarea {
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(229, 231, 235, 0.8);
 }
+
+/* Glassmorphism & Utility Hub Design Tokens */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+}
+
+.pro-badge-glow {
+  background: linear-gradient(135deg, #ff9900, #ff5500);
+  box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
+}
+
+.asset-summary-card {
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 71, 213, 0.2));
+  border: 1px solid rgba(0, 210, 255, 0.2);
+}
+
+.utility-icon-insurance { color: #ff7b72; }
+.utility-icon-electricity { color: #d2a8ff; }
+.utility-icon-mobile { color: #56d364; }
+.utility-icon-gas { color: #79c0ff; }
+
+.pro-whatsapp-banner {
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.1), rgba(18, 140, 126, 0.2));
+  border: 1px solid rgba(37, 211, 102, 0.3);
+}
