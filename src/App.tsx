@@ -534,11 +534,11 @@ const MainContent: React.FC = () => {
       {/* Main App Container */}
       <main className="max-w-7xl mx-auto px-4 lg:px-8 py-6 pb-28 space-y-6">
         
-        {/* TAB 1: Dashboard View */}
+        {/* TAB 1: Dashboard Home View */}
         {activeTab === 'dashboard' && (
           <div className="space-y-6 animate-in fade-in duration-300">
 
-            {/* Metric Cards */}
+            {/* Metric Cards (KPI Summary) */}
             <MetricCards
               metrics={metrics}
               assets={assets}
@@ -559,50 +559,71 @@ const MainContent: React.FC = () => {
               onRenewWarrantyToast={(msg) => showToast(msg)}
             />
 
-            {/* Upcoming Warranty Expiries Section with 30d, 60d, 90d, Expired filter tabs */}
-            <WarrantyExpiryWidget
-              assets={assets}
-              onSelectAsset={(ast) => setSelectedAsset(ast)}
-              onOpenClaimModal={(ast) => setClaimAsset(ast)}
-            />
-
-            {/* Asset Health & Depreciation Tracker Widget */}
-            <DepreciationTrackerWidget
-              assets={assets}
-              onSelectAsset={(ast) => setSelectedAsset(ast)}
-              onOpenClaimModal={(ast) => setClaimAsset(ast)}
-            />
-
-            {/* Privacy-Focused FASTag Balance & Tag Status Guardian */}
-            <FastagCheckerWidget
-              assets={assets}
-              onShowToast={(msg) => showToast(msg)}
-            />
-
-            {/* One-Click Brand Support Directory */}
-            <BrandSupportDirectory />
-
-            {/* Shortcut Card to Vault */}
-            <div className="p-6 rounded-3xl bg-[#0F141F] border border-[#222C40] flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
-              <div className="space-y-1 text-center sm:text-left">
-                <h3 className="text-sm font-extrabold text-white flex items-center justify-center sm:justify-start gap-2">
-                  <span>Asset & Warranty Vault Grid</span>
-                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/30">
-                    {assets.length} Items Stored
-                  </span>
+            {/* Recent Assets Preview (Max 3 Items) */}
+            <div className="p-5 rounded-3xl bg-[#0F141F] border border-[#222C40] space-y-3 shadow-xl">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-black uppercase tracking-widest text-[#10B981] flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                  <span>Recent Assets ({Math.min(assets.length, 3)} of {assets.length})</span>
                 </h3>
-                <p className="text-xs text-slate-400">
-                  View, filter, search and manage all stored invoices, warranties, and policy documents.
-                </p>
+
+                <button
+                  onClick={() => setActiveTab('vault')}
+                  className="text-xs font-bold text-[#10B981] hover:underline flex items-center gap-1 cursor-pointer"
+                >
+                  <span>View All Vault ({assets.length})</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
               </div>
-              <button
-                onClick={() => setActiveTab('vault')}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-[#10B981] to-teal-400 text-slate-950 font-black text-xs shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all cursor-pointer shrink-0 flex items-center gap-2"
-              >
-                <span>Open Full Vault</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+
+              {assets.length === 0 ? (
+                <div className="p-6 rounded-2xl bg-[#0B0E14] border border-dashed border-slate-800 text-center space-y-2">
+                  <p className="text-xs text-slate-400">No assets in your vault yet.</p>
+                  <button
+                    onClick={() => setIsOCRModalOpen(true)}
+                    className="px-4 py-2 rounded-xl bg-[#10B981] text-slate-950 font-bold text-xs shadow-md cursor-pointer"
+                  >
+                    + Scan First Invoice
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {assets.slice(0, 3).map((ast) => (
+                    <div
+                      key={ast.id}
+                      onClick={() => setSelectedAsset(ast)}
+                      className="p-3.5 rounded-2xl bg-[#0B0E14] border border-[#222C40] hover:border-[#10B981]/50 transition flex items-center justify-between cursor-pointer group"
+                    >
+                      <div className="min-w-0 flex-1 pr-2">
+                        <h4 className="text-xs font-extrabold text-white truncate group-hover:text-[#10B981]">
+                          {ast.name}
+                        </h4>
+                        <p className="text-[10px] text-slate-400 font-mono mt-0.5">
+                          {ast.brand || ast.category} • ₹{(ast.price || 0).toLocaleString('en-IN')}
+                        </p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-0.5" />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
+
+            {/* FASTag Status & Depreciation Widgets */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FastagCheckerWidget
+                assets={assets}
+                onShowToast={(msg) => showToast(msg)}
+              />
+              <DepreciationTrackerWidget
+                assets={assets}
+                onSelectAsset={(ast) => setSelectedAsset(ast)}
+                onOpenClaimModal={(ast) => setClaimAsset(ast)}
+              />
+            </div>
+
+            {/* Brand Directory */}
+            <BrandSupportDirectory />
           </div>
         )}
 
