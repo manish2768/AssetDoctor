@@ -80,7 +80,7 @@ app.use((_req, res, next) => {
 });
 
 // OCR Receipt Scanning Endpoint
-app.post(['/api/scan-receipt', '/api/scan'], async (req, res) => {
+app.post(['/api/scan-receipt', '/api/scan', '/api/ocr'], async (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   try {
     const { base64Image, mimeType = 'image/jpeg', textContent } = req.body;

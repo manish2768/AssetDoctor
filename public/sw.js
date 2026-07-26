@@ -1,5 +1,5 @@
 // public/sw.js - AssetDoctor PWA Service Worker
-const CACHE_NAME = 'v3-assetdoctor-release';
+const CACHE_NAME = 'v4-assetdoctor-vercel';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
