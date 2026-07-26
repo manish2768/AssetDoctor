@@ -508,8 +508,8 @@ export const OCRScannerModal: React.FC<OCRScannerModalProps> = ({
                       </div>
                     </div>
                   ) : (
-                    {/* Camera Viewfinder Box */}
                     <div className="relative w-full max-w-md mx-auto aspect-[3/4] bg-slate-950 rounded-2xl overflow-hidden border-2 border-emerald-500/50 shadow-2xl">
+                      {/* Camera Video Feed */}
                       <video 
                         ref={videoRef} 
                         autoPlay 
