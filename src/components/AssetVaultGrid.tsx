@@ -12,6 +12,7 @@ interface AssetVaultGridProps {
   onDeleteAsset: (id: string) => void;
   onOpenOCR: () => void;
   onOpenAddModal: () => void;
+  onSharePostcard?: (asset: Asset) => void;
 }
 
 export const AssetVaultGrid: React.FC<AssetVaultGridProps> = ({
@@ -23,6 +24,7 @@ export const AssetVaultGrid: React.FC<AssetVaultGridProps> = ({
   onDeleteAsset,
   onOpenOCR,
   onOpenAddModal,
+  onSharePostcard,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -375,6 +377,7 @@ export const AssetVaultGrid: React.FC<AssetVaultGridProps> = ({
               onSelect={onSelectAsset}
               onClaim={onClaimAsset}
               onDelete={onDeleteAsset}
+              onSharePostcard={onSharePostcard}
             />
           ))}
         </div>

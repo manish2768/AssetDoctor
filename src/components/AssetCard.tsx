@@ -30,6 +30,7 @@ interface AssetCardProps {
   onSelect: (asset: Asset) => void;
   onClaim: (asset: Asset) => void;
   onDelete: (id: string) => void;
+  onSharePostcard?: (asset: Asset) => void;
 }
 
 export const AssetCard: React.FC<AssetCardProps> = ({
@@ -37,6 +38,7 @@ export const AssetCard: React.FC<AssetCardProps> = ({
   onSelect,
   onClaim,
   onDelete,
+  onSharePostcard,
 }) => {
   // Category Icon Resolver with Bike, AC, RO, Car support
   const renderCategoryIcon = () => {
@@ -266,17 +268,22 @@ export const AssetCard: React.FC<AssetCardProps> = ({
       {/* Card Footer Actions */}
       <div className="pt-3 border-t border-slate-800/80 space-y-2">
         <div className="grid grid-cols-2 gap-2">
-          {/* WhatsApp Share Button */}
-          <a
-            href={whatsAppUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="py-2 px-2.5 rounded-xl bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border border-teal-500/30 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-            title="Share Asset & Warranty details on WhatsApp"
+          {/* Postcard Share Button */}
+          <button
+            type="button"
+            onClick={() => {
+              if (onSharePostcard) {
+                onSharePostcard(asset);
+              } else {
+                window.open(whatsAppUrl, '_blank');
+              }
+            }}
+            className="py-2 px-2.5 rounded-xl bg-gradient-to-r from-teal-500/20 to-emerald-500/20 hover:from-teal-500/30 hover:to-emerald-500/30 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+            title="Share Story Postcard on Instagram & WhatsApp"
           >
-            <MessageCircle className="w-3.5 h-3.5 text-teal-400" />
-            <span>Share WhatsApp</span>
-          </a>
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Share Postcard</span>
+          </button>
 
           {/* Service Hotline Call Button */}
           <a

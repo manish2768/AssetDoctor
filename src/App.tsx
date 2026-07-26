@@ -32,6 +32,7 @@ import { LandingPage } from './components/LandingPage';
 import { Footer } from './components/Footer';
 import { SecurityLockScreen } from './components/SecurityLockScreen';
 import { AssetPassportModal } from './components/AssetPassportModal';
+import { AssetPostcardModal } from './components/AssetPostcardModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './components/Login';
 import { saveAssetToCloud } from './services/assetCloudService';
@@ -231,11 +232,23 @@ const MainContent: React.FC = () => {
     setSavedModalOpen(true);
   };
 
+  const [postcardAsset, setPostcardAsset] = useState<Asset | null>(null);
+  const [isPostcardOpen, setIsPostcardOpen] = useState<boolean>(false);
+
+  const handleOpenPostcard = (assetToShare: Asset) => {
+    setPostcardAsset(assetToShare);
+    setIsPostcardOpen(true);
+  };
+
   // Handlers
   const handleAddAsset = (newAsset: Asset) => {
     saveAssetToDB(newAsset).catch(console.warn);
     setAssets((prev) => [newAsset, ...prev]);
     showToast(`Added "${newAsset.name}" to AssetDoctor Vault!`);
+
+    // Immediately trigger Asset Postcard Modal for newly added asset
+    setPostcardAsset(newAsset);
+    setIsPostcardOpen(true);
 
     // Open celebration modal
     handleAssetSaveSuccess({
@@ -579,6 +592,7 @@ const MainContent: React.FC = () => {
               onDeleteAsset={handleDeleteAsset}
               onOpenOCR={() => setIsOCRModalOpen(true)}
               onOpenAddModal={() => setIsAddModalOpen(true)}
+              onSharePostcard={handleOpenPostcard}
             />
           </div>
         )}
@@ -688,6 +702,13 @@ const MainContent: React.FC = () => {
         asset={passportAsset}
         ownerName={userName}
         onClose={() => setPassportAsset(null)}
+      />
+
+      <AssetPostcardModal
+        isOpen={isPostcardOpen}
+        asset={postcardAsset}
+        ownerName={userName}
+        onClose={() => setIsPostcardOpen(false)}
       />
 
       <WarrantyClaimModal
