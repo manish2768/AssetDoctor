@@ -25,7 +25,8 @@ export const ContactUsModal: React.FC<ContactUsModalProps> = ({
   onShowToast,
 }) => {
   const [name, setName] = useState('Manish');
-  const [emailOrPhone, setEmailOrPhone] = useState('hansgeetglobal@gmail.com / 9918288299');
+  const [email, setEmail] = useState('hansgeetglobal@gmail.com');
+  const [phone, setPhone] = useState('9918288299');
   const [subject, setSubject] = useState('General Query');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,7 +36,7 @@ export const ContactUsModal: React.FC<ContactUsModalProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !emailOrPhone.trim() || !message.trim()) {
+    if (!name.trim() || !email.trim() || !phone.trim() || !message.trim()) {
       if (onShowToast) onShowToast('Please fill in all required fields');
       return;
     }
@@ -202,20 +203,32 @@ export const ContactUsModal: React.FC<ContactUsModalProps> = ({
                     />
                   </div>
 
-                  {/* Email / Phone */}
+                {/* 2-Column Grid: Email Address & Phone Number */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      Email / Phone Number *
-                    </label>
-                    <input
-                      type="text"
-                      value={emailOrPhone}
-                      onChange={(e) => setEmailOrPhone(e.target.value)}
-                      placeholder="hansgeetglobal@gmail.com / 9918288299"
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address *</label>
+                    <input 
+                      type="email" 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" 
+                      placeholder="yourname@gmail.com"
                       required
-                      className="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
                     />
                   </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Phone Number *</label>
+                    <input 
+                      type="tel" 
+                      value={phone} 
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500" 
+                      placeholder="+91 9876543210"
+                      required
+                    />
+                  </div>
+                </div>
                 </div>
 
                 {/* Subject Dropdown */}
