@@ -82,66 +82,7 @@ app.use((_req, res, next) => {
 // OCR Receipt Scanning Endpoint
 app.post('/api/scan-receipt', async (req, res) => {
   try {
-    const { base64Image, mimeType = 'image/jpeg', textContent, sampleType } = req.body;
-
-    // Handle preset simulated samples if requested directly
-    if (sampleType === 'flipkart_multi_item' || sampleType === 'flipkart_nothing_3a' || sampleType === 'flipkart_cmf_buds') {
-      return res.json({
-        success: true,
-        source: 'preset_ocr',
-        data: {
-          vendor: 'Flipkart India Pvt Ltd',
-          purchaseDate: '2026-02-14',
-          totalAmount: 27298,
-          gstin: '29AABCU9603R1ZM',
-          items: [
-            {
-              itemName: 'Nothing Phone (3a) Lite (128GB, White)',
-              brand: 'Nothing',
-              price: 23999,
-              warrantyMonths: 12,
-              category: 'Gadgets',
-              serialNumber: 'NT-PH3A-884102',
-              notes: 'Flipkart Tax Invoice - 1 Year Nothing Brand Warranty & Screen Protection',
-              selected: true,
-            },
-            {
-              itemName: 'CMF Buds 2 Plus ANC Wireless Earbuds',
-              brand: 'CMF by Nothing',
-              price: 3299,
-              warrantyMonths: 12,
-              category: 'Gadgets',
-              serialNumber: 'CMF-BD2P-99120',
-              notes: 'Flipkart Verified Order - 50dB ANC Wireless Earbuds with 1 Year Warranty',
-              selected: true,
-            },
-          ],
-        },
-      });
-    } else if (sampleType === 'croma_tv') {
-      return res.json({
-        success: true,
-        source: 'preset_ocr',
-        data: {
-          vendor: 'Croma Megastore (Infiniti Retail Ltd)',
-          purchaseDate: '2025-06-18',
-          totalAmount: 115000,
-          gstin: '27AAACI0348E1Z8',
-          items: [
-            {
-              itemName: 'LG 65" QNED 4K Smart Mini-LED TV',
-              brand: 'LG',
-              price: 115000,
-              warrantyMonths: 24,
-              category: 'Electronics',
-              serialNumber: 'SN-LGC-65QNED-2025',
-              notes: '2-Year On-Site Manufacturer Warranty + Zero Bright Dot Panel Protection.',
-              selected: true,
-            },
-          ],
-        },
-      });
-    }
+    const { base64Image, mimeType = 'image/jpeg', textContent } = req.body;
 
     if (!aiClient) {
       console.error('Gemini OCR Error: GEMINI_API_KEY environment variable is not configured on server.');
@@ -269,18 +210,22 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
         purchaseDate: jsonResult.purchaseDate || new Date().toISOString().split('T')[0],
         totalAmount: Number(jsonResult.totalAmount) || calculatedTotal,
         gstin: jsonResult.gstin || '',
-        items: extractedItems.length > 0 ? extractedItems : [
-          {
-            itemName: 'Scanned Invoice Asset',
-            brand: 'Generic',
-            price: 15000,
-            warrantyMonths: 12,
-            category: 'Electronics',
-            serialNumber: `SN-${Math.floor(100000 + Math.random() * 900000)}`,
-            notes: 'Verified by AssetDoctor AI OCR Scan',
-            selected: true,
-          }
-        ],
+    if (!extractedItems || extractedItems.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: 'Failed to scan document. Could not extract items from image using Gemini AI.',
+      });
+    }
+
+    return res.json({
+      success: true,
+      source: 'gemini_ocr',
+      data: {
+        vendor: jsonResult.vendor || 'Authorized Merchant',
+        purchaseDate: jsonResult.purchaseDate || new Date().toISOString().split('T')[0],
+        totalAmount: Number(jsonResult.totalAmount) || calculatedTotal,
+        gstin: jsonResult.gstin || '',
+        items: extractedItems,
       },
     });
   } catch (err: any) {
