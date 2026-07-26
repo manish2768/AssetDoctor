@@ -12,7 +12,8 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential
 } from 'firebase/auth';
-import { auth, googleProvider } from '../firebase';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { auth, googleProvider, db } from '../firebase';
 
 interface AuthContextType {
   user: User | null;
@@ -40,6 +41,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (currentUser.email) localStorage.setItem('assetdoctor_user_email', currentUser.email);
         if (currentUser.displayName) localStorage.setItem('assetdoctor_user_name', currentUser.displayName);
         if (currentUser.phoneNumber) localStorage.setItem('assetdoctor_user_phone', currentUser.phoneNumber);
+
+        // Auto-create Firestore user profile if doc does not exist
+        const userRef = doc(db, 'users', currentUser.uid);
+        getDoc(userRef).then((snap) => {
+          if (!snap.exists()) {
+            setDoc(userRef, {
+              uid: currentUser.uid,
+              email: currentUser.email || '',
+              displayName: currentUser.displayName || 'Vault Owner',
+              phoneNumber: currentUser.phoneNumber || '',
+              createdAt: serverTimestamp(),
+            }).catch((err) => console.warn('Firestore profile set notice:', err));
+
+            // Trigger Welcome Email for new user
+            if (currentUser.email) {
+              fetch('/api/auth/welcome-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  email: currentUser.email,
+                  displayName: currentUser.displayName || 'Vault Owner',
+                }),
+              }).catch((e) => console.warn('Welcome email trigger notice:', e));
+            }
+          }
+        }).catch((err) => console.warn('User profile doc check notice:', err));
       } else {
         localStorage.removeItem('assetdoctor_is_logged_in');
       }

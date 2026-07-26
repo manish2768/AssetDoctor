@@ -52,7 +52,7 @@ import { CheckCircle2, Camera, Sparkles, ArrowRight, Bot } from 'lucide-react';
 const STORAGE_KEY = 'assetdoctor_servivault_assets';
 
 const MainContent: React.FC = () => {
-  const { user, logout: firebaseLogout } = useAuth();
+  const { user, loading: authLoading, logout: firebaseLogout } = useAuth();
   const [assets, setAssets] = useState<Asset[]>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -108,7 +108,7 @@ const MainContent: React.FC = () => {
     return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
-    return localStorage.getItem('assetdoctor_is_logged_in') === 'true';
+    return localStorage.getItem('assetdoctor_is_logged_in') === 'true' || !!user;
   });
   const [userName, setUserName] = useState<string>(() => {
     return user?.displayName || localStorage.getItem('assetdoctor_user_name') || 'Vault Owner';
@@ -123,6 +123,7 @@ const MainContent: React.FC = () => {
   // Sync user state when Firebase auth user loads/changes
   useEffect(() => {
     if (user) {
+      setIsLoggedIn(true);
       if (user.displayName) setUserName(user.displayName);
       if (user.email) setUserEmail(user.email);
       if (user.phoneNumber) setUserPhone(user.phoneNumber);
