@@ -29,11 +29,8 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
 
     try {
       if (!isSupported || !navigator.credentials) {
-        // Fallback for devices without hardware WebAuthn sensor
-        setTimeout(() => {
-          setAuthenticating(false);
-          onUnlocked();
-        }, 500);
+        setAuthenticating(false);
+        setMode('PIN');
         return;
       }
 
@@ -43,19 +40,24 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
       const getOptions: CredentialRequestOptions = {
         publicKey: {
           challenge: challenge,
-          timeout: 15000,
+          timeout: 10000,
           userVerification: "preferred"
         }
       };
 
       try {
-        await navigator.credentials.get(getOptions);
+        const cred = await navigator.credentials.get(getOptions);
         setAuthenticating(false);
-        onUnlocked();
+        if (cred) {
+          onUnlocked();
+        } else {
+          setMode('PIN');
+        }
       } catch (getErr: any) {
-        console.log("WebAuthn device auth notice:", getErr?.message);
+        console.log("WebAuthn passkey notice:", getErr?.message);
         setAuthenticating(false);
-        onUnlocked();
+        // Automatically switch to clean PIN mode instead of getting stuck
+        setMode('PIN');
       }
     } catch (err) {
       console.warn("Biometric authentication fallback:", err);

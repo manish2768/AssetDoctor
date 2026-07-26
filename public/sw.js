@@ -1,5 +1,5 @@
 // public/sw.js - AssetDoctor PWA Service Worker
-const CACHE_NAME = 'assetdoctor-v2';
+const CACHE_NAME = 'v3-assetdoctor-release';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -12,44 +12,40 @@ const STATIC_ASSETS = [
   '/icons/assetdoctor-512.svg'
 ];
 
-// 1. Service Worker Install - Pre-cache Static Assets
+// 1. Service Worker Install - Immediate Cache Invalidation & Pre-cache
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Caching App Shell & PWA Assets');
+      console.log('[ServiceWorker v3] Caching App Shell & PWA Assets');
       return cache.addAll(STATIC_ASSETS).catch((err) => console.warn('PWA Cache Add Error:', err));
     })
   );
-  self.skipWaiting();
 });
 
-// 2. Activate Event - Clean Up Old Caches
+// 2. Activate Event - Force Discard Old Caches & Claim Clients Immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keyList) => {
       return Promise.all(
         keyList.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('[ServiceWorker] Removing Old Cache', key);
+            console.log('[ServiceWorker v3] Discarding Stale Cache:', key);
             return caches.delete(key);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
-// 3. Fetch Event - Cache First, Network Fallback Strategy
+// 3. Fetch Event - Network First with Cache Fallback for Fresh Deployments
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((networkResponse) => {
+    fetch(event.request)
+      .then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -57,11 +53,16 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
-      }).catch(() => {
-        console.log('[ServiceWorker] Offline fetch failed');
-        return cachedResponse;
-      });
-    })
+      })
+      .catch(() => {
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          console.log('[ServiceWorker v3] Offline fetch failed');
+          return caches.match('/index.html');
+        });
+      })
   );
 });
 
