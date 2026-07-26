@@ -1,21 +1,23 @@
-// public/sw.js
-const CACHE_NAME = 'assetdoctor-v1';
+// public/sw.js - AssetDoctor PWA Service Worker
+const CACHE_NAME = 'assetdoctor-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/manifest.json',
   '/sitemap.xml',
   '/robots.txt',
+  '/icon-192.png',
+  '/icon-512.png',
   '/icon.svg',
-  '/logo.png'
+  '/icons/assetdoctor-512.svg'
 ];
 
 // 1. Service Worker Install - Pre-cache Static Assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Caching App Shell');
-      return cache.addAll(STATIC_ASSETS).catch(() => {});
+      console.log('[ServiceWorker] Caching App Shell & PWA Assets');
+      return cache.addAll(STATIC_ASSETS).catch((err) => console.warn('PWA Cache Add Error:', err));
     })
   );
   self.skipWaiting();
@@ -48,7 +50,6 @@ self.addEventListener('fetch', (event) => {
         return cachedResponse;
       }
       return fetch(event.request).then((networkResponse) => {
-        // Dynamic Caching for new resources
         if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -57,7 +58,6 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        // Offline Fallback Page/Data
         console.log('[ServiceWorker] Offline fetch failed');
         return cachedResponse;
       });
@@ -70,8 +70,8 @@ self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : { title: 'Warranty Expiry Alert ⚠️', body: 'One of your assets is expiring soon!' };
   const options = {
     body: data.body,
-    icon: '/logo.png',
-    badge: '/icon.svg',
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
     vibrate: [200, 100, 200],
     data: { url: data.url || '/' }
   };

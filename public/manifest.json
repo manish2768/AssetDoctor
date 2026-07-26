@@ -1,34 +1,23 @@
 {
   "short_name": "AssetDoctor",
-  "name": "AssetDoctor - Smart Care & Warranty Vault",
+  "name": "AssetDoctor",
   "icons": [
     {
-      "src": "/icons/assetdoctor-512.svg",
-      "sizes": "512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/logo192.png",
+      "src": "/icon-192.png",
       "type": "image/png",
       "sizes": "192x192",
       "purpose": "any maskable"
     },
     {
-      "src": "/logo512.png",
+      "src": "/icon-512.png",
       "type": "image/png",
       "sizes": "512x512",
       "purpose": "any maskable"
-    },
-    {
-      "src": "/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
     }
   ],
-  "start_url": "/dashboard",
-  "display": "standalone",
-  "orientation": "portrait",
+  "start_url": "/",
+  "background_color": "#0f172a",
   "theme_color": "#0f172a",
-  "background_color": "#0f172a"
+  "display": "standalone",
+  "orientation": "portrait"
 }
