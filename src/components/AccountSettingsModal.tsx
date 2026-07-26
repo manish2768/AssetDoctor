@@ -25,6 +25,7 @@ import { AssetDoctorLogo } from './AssetDoctorLogo';
 
 interface AccountSettingsModalProps {
   isOpen: boolean;
+  userName?: string;
   userEmail: string;
   userPhone: string;
   userLocation?: string;
@@ -41,6 +42,7 @@ interface AccountSettingsModalProps {
 
 export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({
   isOpen,
+  userName,
   userEmail,
   userPhone,
   userLocation = 'Mumbai, Maharashtra',
@@ -359,44 +361,51 @@ export const AccountSettingsModal: React.FC<AccountSettingsModalProps> = ({
                   </span>
                 </div>
 
-                {/* Email row */}
-                <div className="flex items-center justify-between py-1 text-xs">
-                  <span className="text-slate-400 flex items-center gap-1.5">
-                    <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                    Auth Email:
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-white font-bold">{userEmail}</span>
-                    <button
-                      onClick={() => {
-                        onClose();
-                        onOpenUpdateEmailModal();
-                      }}
-                      className="px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 hover:bg-cyan-500/30 text-[10px] font-bold border border-cyan-500/30 cursor-pointer"
-                    >
-                      Update
-                    </button>
+                {/* 2-Column Grid: Name & Email Address */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                  {/* Name */}
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Name *</label>
+                    <input 
+                      type="text" 
+                      value={userName || localStorage.getItem('assetdoctor_user_name') || "Manish Rai"} 
+                      readOnly 
+                      className="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none cursor-not-allowed opacity-80"
+                    />
+                  </div>
+
+                  {/* Email Address (Separate) */}
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address *</label>
+                    <input 
+                      type="email" 
+                      value={userEmail || localStorage.getItem('assetdoctor_user_email') || "manish2768@gmail.com"} 
+                      readOnly 
+                      className="w-full bg-slate-800/80 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:outline-none cursor-not-allowed opacity-80"
+                    />
                   </div>
                 </div>
 
-                {/* Phone row */}
-                <div className="flex items-center justify-between py-1 text-xs">
-                  <span className="text-slate-400 flex items-center gap-1.5">
-                    <Smartphone className="w-3.5 h-3.5 text-teal-400" />
-                    Registered Phone:
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-white font-bold">{userPhone}</span>
+                {/* Phone Number (Separate Field below) */}
+                <div className="mt-3">
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-slate-300">Phone Number (Optional)</label>
                     <button
                       onClick={() => {
                         onClose();
                         onOpenUpdatePhoneModal();
                       }}
-                      className="px-2 py-0.5 rounded bg-teal-500/20 text-teal-300 hover:bg-teal-500/30 text-[10px] font-bold border border-teal-500/30 cursor-pointer"
+                      className="text-[10px] text-teal-400 hover:underline font-bold cursor-pointer"
                     >
-                      Update
+                      Verify / Change
                     </button>
                   </div>
+                  <input 
+                    type="tel" 
+                    placeholder="Enter your phone number" 
+                    defaultValue={userPhone || ""} 
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs focus:border-emerald-500 focus:outline-none font-mono"
+                  />
                 </div>
 
                 {/* City / Location Section */}
