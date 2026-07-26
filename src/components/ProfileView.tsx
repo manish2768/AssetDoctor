@@ -297,57 +297,44 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/15 to-teal-500/10 border border-[#10B981]/40 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
+          {/* App Settings & Preferences */}
+          <button
+            onClick={onOpenAccountSettings}
+            className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
+          >
+            <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-xl bg-[#10B981] text-slate-950 font-black">
-                <DownloadCloud className="w-5 h-5" />
+                <Settings className="w-5 h-5" />
               </div>
               <div>
                 <span className="text-xs font-black text-emerald-300 block">
-                  {isAppInstalled ? 'PWA Installed' : 'Install PWA App'}
+                  App Settings & Preferences
                 </span>
                 <span className="text-[10px] text-slate-400">
-                  {isAppInstalled ? 'Running Standalone' : 'Add to Home Screen'}
+                  Profile email, phone & security PIN
                 </span>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-emerald-400 group-hover:translate-x-1 transition" />
           </button>
 
-          {/* Replay Onboarding Tour */}
+          {/* Customer Support & Assistance */}
           <button
-            onClick={onOpenOnboarding}
+            onClick={onOpenContactUs}
             className="p-3.5 rounded-2xl bg-teal-500/10 border border-teal-500/30 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-xl bg-[#0B0E14] text-[#10B981] border border-teal-500/30 font-black">
-                <HelpCircle className="w-5 h-5" />
+                <Mail className="w-5 h-5" />
               </div>
               <div>
                 <span className="text-xs font-black text-teal-300 block">
-                  Onboarding Tour
+                  Customer Support
                 </span>
-                <span className="text-[10px] text-slate-400">Replay FTUX Tutorial</span>
+                <span className="text-[10px] text-slate-400">Direct help & feature requests</span>
               </div>
             </div>
             <ChevronRight className="w-4 h-4 text-teal-400 group-hover:translate-x-1 transition" />
-          </button>
-
-          {/* Emergency Hotline */}
-          <button
-            onClick={onOpenEmergencyModal}
-            className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 hover:border-rose-500 text-left transition flex items-center justify-between cursor-pointer group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2.5 rounded-xl bg-rose-500 text-white font-black">
-                <PhoneCall className="w-5 h-5 animate-pulse" />
-              </div>
-              <div>
-                <span className="text-xs font-black text-rose-300 block">
-                  Emergency Support
-                </span>
-                <span className="text-[10px] text-slate-400">24x7 Brand Hotline</span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-rose-400 group-hover:translate-x-1 transition" />
           </button>
         </div>
       </div>

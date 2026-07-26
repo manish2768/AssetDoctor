@@ -131,6 +131,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }).catch((err) => console.warn("Welcome email trigger notice:", err));
       }
     } catch (error: any) {
+      if (error?.code === 'auth/email-already-in-use') {
+        console.log("Email already registered. Signing in existing user cleanly...");
+        await signInWithEmailAndPassword(auth, email, pass);
+        return;
+      }
       console.error("Signup error:", error);
       throw error;
     }
