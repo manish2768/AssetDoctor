@@ -53,7 +53,7 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
       }
 
       // NO HARDCODED MOCK FALLBACK: Throw clear error
-      throw new Error(resData.error || 'Failed to scan bill. Please check Gemini API Key or connection.');
+      throw new Error(resData.error || 'Failed to scan document. Please check your Gemini API key configuration.');
     }
 
     // Initialize Gemini AI Client using @google/genai
@@ -102,8 +102,8 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
         ],
       });
     } catch (modelError: any) {
-      console.error('Gemini OCR Model Error (gemini-1.5-flash failed):', modelError);
-      throw new Error(`Failed to scan bill. Gemini AI Vision error: ${modelError?.message || 'Model call failed'}`);
+      console.error('Gemini OCR Error:', modelError);
+      throw new Error(`Failed to scan document. Please check your Gemini API key configuration.`);
     }
 
     const responseText = response.text || '';

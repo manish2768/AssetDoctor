@@ -114,7 +114,7 @@ export const OCRScannerModal: React.FC<OCRScannerModalProps> = ({
       handleClose();
     } catch (err: any) {
       console.error('Gemini OCR Error:', err);
-      setErrorMsg(err.message || 'Failed to scan bill. Please check Gemini API Key or connection.');
+      setErrorMsg(err.message || 'Failed to scan document. Please check your Gemini API key configuration.');
     } finally {
       setIsProcessing(false);
     }
