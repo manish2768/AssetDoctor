@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Fingerprint, ShieldCheck, Lock, AlertCircle, KeyRound, Delete, Settings } from 'lucide-react';
+import { Fingerprint, ShieldCheck, Lock, AlertCircle, KeyRound, Delete } from 'lucide-react';
 import { hashPin } from '../utils/security';
 
 interface SecurityLockScreenProps {
@@ -29,7 +29,7 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
 
     try {
       if (!isSupported || !navigator.credentials) {
-        // Smooth unlock for browsers without hardware WebAuthn sensor
+        // Fallback for devices without hardware WebAuthn sensor
         setTimeout(() => {
           setAuthenticating(false);
           onUnlocked();
@@ -40,7 +40,6 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
 
-      // Attempt to retrieve existing webauthn credential
       const getOptions: CredentialRequestOptions = {
         publicKey: {
           challenge: challenge,
@@ -54,8 +53,7 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
         setAuthenticating(false);
         onUnlocked();
       } catch (getErr: any) {
-        // Graceful handling when no credential key is registered on device yet
-        console.log("WebAuthn get notice:", getErr?.message);
+        console.log("WebAuthn device auth notice:", getErr?.message);
         setAuthenticating(false);
         onUnlocked();
       }
@@ -66,7 +64,7 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
     }
   };
 
-  // PIN Numpad Key Click Handler
+  // PIN Numpad Key Click Handler (Dynamic user PIN unlock)
   const handleNumClick = async (digit: string) => {
     if (pinInput.length >= 4) return;
 
@@ -77,15 +75,12 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
     if (newPin.length === 4) {
       const enteredHash = await hashPin(newPin);
       const storedHash = localStorage.getItem('assetdoctor_pin_hash');
-      const defaultHash = await hashPin('1234');
 
-      const targetHash = storedHash || defaultHash;
-
-      if (enteredHash === targetHash) {
+      if (!storedHash || enteredHash === storedHash) {
         onUnlocked();
         setPinInput('');
       } else {
-        setErrorMsg('Incorrect PIN. Default PIN is 1234.');
+        setErrorMsg('Incorrect PIN. Please try again.');
         setTimeout(() => setPinInput(''), 400);
       }
     }
@@ -131,7 +126,7 @@ export const SecurityLockScreen: React.FC<SecurityLockScreenProps> = ({ isOpen, 
         <p className="text-xs text-slate-400 mb-4">
           {mode === 'BIOMETRIC'
             ? 'Touch fingerprint sensor or use Face ID to unlock'
-            : 'Enter 4-digit security PIN (Default: 1234)'}
+            : 'Enter 4-digit security PIN to unlock'}
         </p>
 
         {/* Error Alert Display */}

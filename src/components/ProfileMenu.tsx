@@ -25,7 +25,7 @@ export const ProfileMenu: React.FC = () => {
         
         {/* Real Logged In Email */}
         <p className="text-xs text-slate-400 font-mono mt-0.5 truncate">
-          {user?.email || 'user@assetdoctor.app'}
+          {user?.email || 'No email registered'}
         </p>
 
         {/* Real Phone or Fallback */}
