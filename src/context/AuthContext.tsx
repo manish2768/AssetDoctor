@@ -78,6 +78,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         await sendEmailVerification(res.user).catch((err) => {
           console.warn("Email verification send notice:", err);
         });
+
+        // Asynchronously trigger Titan Mail Welcome Email
+        fetch('/api/welcome-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, displayName: name }),
+        }).catch((err) => console.warn("Welcome email trigger notice:", err));
       }
     } catch (error: any) {
       console.error("Signup error:", error);

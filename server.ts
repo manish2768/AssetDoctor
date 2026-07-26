@@ -55,6 +55,50 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
+// New User Welcome Email Endpoint
+app.post(['/api/welcome-email', '/api/auth/welcome-email'], async (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  try {
+    const { email, displayName, name } = req.body;
+    const userName = displayName || name || 'Vault Owner';
+
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email address is required' });
+    }
+
+    const welcomeHtml = `
+      <div style="font-family: Arial, sans-serif; background-color: #0f172a; color: #f8fafc; padding: 40px 20px; border-radius: 20px;">
+        <div style="max-width: 500px; margin: 0 auto; background-color: #1e293b; border: 1px solid #334155; padding: 30px; border-radius: 16px;">
+          <h2 style="color: #10b981; margin-top: 0;">🛡️ Welcome to AssetDoctor Vault!</h2>
+          <p>Hi <strong>${userName}</strong>,</p>
+          <p>Welcome to <strong>AssetDoctor ServiVault</strong> — your offline-first smart vault for managing invoices, warranties, insurance policies, and FASTag cards.</p>
+          <div style="background-color: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid #10b981; margin: 20px 0;">
+            <p style="margin: 0; color: #34d399; font-weight: bold;">🔒 Bank-Grade Encrypted Protection</p>
+            <p style="margin: 5px 0 0 0; font-size: 12px; color: #94a3b8;">Your documents are stored locally on your device with AES-256 encryption and remote cloud sync.</p>
+          </div>
+          <p style="font-size: 13px; color: #94a3b8;">If you ever have any questions, reach out to us directly at <a href="mailto:support@assetdoctor.in" style="color: #10b981;">support@assetdoctor.in</a>.</p>
+          <hr style="border: 0; border-top: 1px solid #334155; margin: 20px 0;" />
+          <p style="font-size: 11px; color: #64748b; margin-bottom: 0;">© ${new Date().getFullYear()} AssetDoctor Technologies • support@assetdoctor.in</p>
+        </div>
+      </div>
+    `;
+
+    const mailOptions = {
+      from: `"AssetDoctor Support" <${smtpUser}>`,
+      to: email,
+      subject: '👋 Welcome to AssetDoctor Vault - Your Smart Care Guardian',
+      html: welcomeHtml,
+    };
+
+    const info = await mailTransporter.sendMail(mailOptions);
+    console.log('Welcome Email sent successfully:', info.messageId);
+    return res.json({ success: true, messageId: info.messageId });
+  } catch (err: any) {
+    console.error('Welcome Email Error:', err);
+    return res.status(200).json({ success: false, error: err.message || 'Failed to send welcome email', data: null });
+  }
+});
+
 // Initialize Gemini Client safely
 let aiClient: GoogleGenAI | null = null;
 if (process.env.GEMINI_API_KEY) {
