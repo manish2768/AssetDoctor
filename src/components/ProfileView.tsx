@@ -293,7 +293,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* App Settings & Preferences */}
           <button
-            onClick={onOpenAccountSettings}
+            onClick={() => typeof onOpenAccountSettingsModal === 'function' ? onOpenAccountSettingsModal() : alert('Account Settings & Preferences coming soon!')}
             className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
@@ -314,7 +314,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
           {/* Customer Support & Assistance */}
           <button
-            onClick={onOpenContactUs}
+            onClick={() => typeof onOpenContactUs === 'function' ? onOpenContactUs() : alert('Customer Support hub opening...')}
             className="p-3.5 rounded-2xl bg-teal-500/10 border border-teal-500/30 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
@@ -342,7 +342,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="space-y-2">
           {/* About Us */}
           <button
-            onClick={onOpenAboutUs}
+            onClick={() => typeof onOpenAboutUs === 'function' ? onOpenAboutUs() : alert('AssetDoctor v2.4 • Smart Asset & Vault Manager')}
             className="w-full p-3.5 rounded-2xl bg-[#0B0E14] hover:bg-[#161D2B] border border-[#222C40] hover:border-slate-700 text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
@@ -361,7 +361,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
           {/* Contact Support */}
           <button
-            onClick={onOpenContactUs}
+            onClick={() => typeof onOpenContactUs === 'function' ? onOpenContactUs() : alert('Customer Support hub opening...')}
             className="w-full p-3.5 rounded-2xl bg-[#0B0E14] hover:bg-[#161D2B] border border-[#222C40] hover:border-slate-700 text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
@@ -380,7 +380,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
           {/* Privacy Policy */}
           <button
-            onClick={onOpenPrivacyPolicy}
+            onClick={() => typeof onOpenPrivacyPolicy === 'function' ? onOpenPrivacyPolicy() : alert('Privacy Policy: All asset data stored locally on device via IndexedDB.')}
             className="w-full p-3.5 rounded-2xl bg-[#0B0E14] hover:bg-[#161D2B] border border-[#222C40] hover:border-slate-700 text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
