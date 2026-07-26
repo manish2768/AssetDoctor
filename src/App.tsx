@@ -36,6 +36,7 @@ import { AssetPostcardModal } from './components/AssetPostcardModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './components/Login';
 import { saveAssetToCloud } from './services/assetCloudService';
+import { fetchUserAssets, saveUserAsset, deleteUserAsset } from './services/firestoreService';
 import {
   getAllAssetsFromDB,
   saveAssetToDB,
@@ -166,6 +167,19 @@ const MainContent: React.FC = () => {
     };
   }, []);
 
+  // Fetch Remote Database Assets from Firebase Firestore on Auth change
+  useEffect(() => {
+    if (user?.uid) {
+      fetchUserAssets()
+        .then((cloudAssets) => {
+          if (cloudAssets && cloudAssets.length > 0) {
+            setAssets(cloudAssets);
+          }
+        })
+        .catch((err) => console.warn('Firestore fetchUserAssets error:', err));
+    }
+  }, [user?.uid]);
+
   // Sync state to localStorage & IndexedDB
   useEffect(() => {
     try {
@@ -243,6 +257,7 @@ const MainContent: React.FC = () => {
   // Handlers
   const handleAddAsset = (newAsset: Asset) => {
     saveAssetToDB(newAsset).catch(console.warn);
+    saveUserAsset(newAsset).catch(console.warn);
     setAssets((prev) => [newAsset, ...prev]);
     showToast(`Added "${newAsset.name}" to AssetDoctor Vault!`);
 
@@ -285,8 +300,9 @@ const MainContent: React.FC = () => {
     const target = assets.find((a) => a.id === id);
     if (confirm(`Are you sure you want to remove ${target?.name || 'this asset'} from AssetDoctor Vault?`)) {
       deleteAssetFromDB(id).catch(console.warn);
-      setAssets((prev) => prev.filter((item) => item.id !== id));
-      showToast('Asset deleted from vault.');
+      deleteUserAsset(id).catch(console.warn);
+      setAssets((prev) => prev.filter((a) => a.id !== id));
+      showToast(`Removed "${target?.name || 'Asset'}" from Vault.`);
     }
   };
 

@@ -416,27 +416,6 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
             <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-transform group-hover:translate-x-1" />
           </button>
 
-          {/* Logout Button */}
-          {onLogout && (
-            <button
-              onClick={onLogout}
-              id="profile-logout-btn"
-              className="w-full p-3.5 rounded-2xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 hover:border-rose-500 text-left transition flex items-center justify-between cursor-pointer group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/40">
-                  <LogOut className="w-5 h-5" />
-                </div>
-                <div>
-                  <span className="text-xs font-bold text-rose-300 block group-hover:text-rose-200 transition-colors">
-                    End Active Session (Log Out)
-                  </span>
-                  <span className="text-[10px] text-slate-400">Lock vault and return to Auth screen</span>
-                </div>
-              </div>
-              <ChevronRight className="w-4 h-4 text-rose-400 group-hover:text-rose-300 transition-transform group-hover:translate-x-1" />
-            </button>
-          )}
         </div>
       </div>
 
