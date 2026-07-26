@@ -100,24 +100,179 @@ input, textarea {
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
+  padding: 16px;
 }
 
-.pro-badge-glow {
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 15px 10px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-icon {
+  font-size: 28px;
+  color: #00d2ff;
+}
+
+.greeting {
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.pro-badge {
   background: linear-gradient(135deg, #ff9900, #ff5500);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
   box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
 }
 
-.asset-summary-card {
+.asset-summary {
   background: linear-gradient(135deg, rgba(0, 210, 255, 0.1), rgba(58, 71, 213, 0.2));
   border: 1px solid rgba(0, 210, 255, 0.2);
 }
 
-.utility-icon-insurance { color: #ff7b72; }
-.utility-icon-electricity { color: #d2a8ff; }
-.utility-icon-mobile { color: #56d364; }
-.utility-icon-gas { color: #79c0ff; }
+.asset-amount {
+  font-size: 32px;
+  margin: 8px 0;
+  color: #00d2ff;
+}
 
-.pro-whatsapp-banner {
+.sync-status {
+  font-size: 11px;
+  color: #3fb950;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #3fb950;
+  border-radius: 50%;
+}
+
+.utility-hub {
+  padding: 0 15px;
+  margin-top: 20px;
+}
+
+.utility-hub h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #c9d1d9;
+}
+
+.utility-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.utility-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.icon-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.insurance-icon { color: #ff7b72; }
+.electricity-icon { color: #d2a8ff; }
+.mobile-icon { color: #56d364; }
+.gas-icon { color: #79c0ff; }
+
+.utility-item span {
+  font-size: 11px;
+  color: #8b949e;
+}
+
+.pro-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: linear-gradient(135deg, rgba(37, 211, 102, 0.1), rgba(18, 140, 126, 0.2));
   border: 1px solid rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-icon {
+  font-size: 24px;
+  color: #25D366;
+  margin-right: 10px;
+}
+
+.pro-content {
+  display: flex;
+  align-items: center;
+}
+
+.btn-upgrade {
+  background: #25D366;
+  color: #000;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 65px;
+  background: #161b22;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #8b949e;
+  text-decoration: none;
+  font-size: 11px;
+  gap: 4px;
+}
+
+.nav-item.active {
+  color: #00d2ff;
+}
+
+.nav-btn-scan {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #00d2ff, #3a47d5);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 20px;
+  margin-top: -25px;
+  box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
 }
