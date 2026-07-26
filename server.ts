@@ -87,9 +87,10 @@ app.post(['/api/scan-receipt', '/api/scan', '/api/ocr'], async (req, res) => {
 
     if (!aiClient) {
       console.error('Gemini OCR Error: GEMINI_API_KEY environment variable is not configured on server.');
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         error: 'Failed to scan bill. Please check Gemini API Key or connection.',
+        data: null,
       });
     }
 
@@ -218,9 +219,10 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
     const calculatedTotal = extractedItems.reduce((acc: number, cur: any) => acc + (cur.price || 0), 0);
 
     if (!extractedItems || extractedItems.length === 0) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         error: 'Failed to scan document. Could not extract items from image using Gemini AI.',
+        data: null,
       });
     }
 
@@ -237,9 +239,10 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
     });
   } catch (err: any) {
     console.error('OCR Scan error:', err);
-    return res.status(500).json({
+    return res.status(200).json({
       success: false,
       error: err.message || 'Failed to scan receipt invoice',
+      data: null,
     });
   }
 });
