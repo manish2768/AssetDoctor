@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileContract, Bolt, Smartphone, Droplets, Zap, ShieldCheck, ArrowRight, X, CheckCircle2, IndianRupee } from 'lucide-react';
+import { FileText, Bolt, Smartphone, Droplets, Zap, ShieldCheck, ArrowRight, X, CheckCircle2, IndianRupee } from 'lucide-react';
 
 interface UtilityPaymentHubProps {
   onShowToast: (message: string) => void;
@@ -16,7 +16,7 @@ export const UtilityPaymentHub: React.FC<UtilityPaymentHubProps> = ({ onShowToas
       id: 'Insurance',
       title: 'Insurance Pay',
       subtitle: 'Policy & Term Premiums',
-      icon: <FileContract className="w-5 h-5 text-emerald-400" />,
+      icon: <FileText className="w-5 h-5 text-emerald-400" />,
       bg: 'bg-emerald-500/10 border-emerald-500/30',
       badge: 'Auto-Archive',
     },
