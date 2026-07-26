@@ -30,6 +30,7 @@ import { DepreciationTrackerWidget } from './components/DepreciationTrackerWidge
 import { FastagCheckerWidget } from './components/FastagCheckerWidget';
 import { LandingPage } from './components/LandingPage';
 import { Footer } from './components/Footer';
+import { SecurityLockScreen } from './components/SecurityLockScreen';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './components/Login';
 import { saveAssetToCloud } from './services/assetCloudService';
@@ -90,14 +91,17 @@ const MainContent: React.FC = () => {
     setCurrentPath(path);
   };
 
+  const [isAppLocked, setIsAppLocked] = useState<boolean>(true); // Locks on initial launch
+
+  // Lock app automatically when resuming from background
   useEffect(() => {
-    const handlePopState = () => {
-      if (typeof window !== 'undefined') {
-        setCurrentPath(window.location.pathname || '/');
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        setIsAppLocked(true);
       }
     };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
   }, []);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(() => {
     return localStorage.getItem('assetdoctor_is_logged_in') === 'true';
@@ -757,6 +761,12 @@ const MainContent: React.FC = () => {
           localStorage.setItem('assetdoctor_ftux_completed', 'true');
           showToast('Welcome to AssetDoctor! Your vault is ready.');
         }}
+      />
+
+      {/* Security Lock Screen (WebAuthn / Biometrics & 4-Digit PIN) */}
+      <SecurityLockScreen
+        isOpen={isAppLocked}
+        onUnlocked={() => setIsAppLocked(false)}
       />
 
       {/* Splash Screen Intro overlay */}

@@ -79,3 +79,11 @@ export async function decryptData(cipherTextBase64: string, secretPassphrase: st
   const dec = new TextDecoder();
   return dec.decode(decryptedBuffer);
 }
+
+// Secure SHA-256 PIN hashing helper
+export async function hashPin(pin: string): Promise<string> {
+  const enc = new TextEncoder();
+  const hashBuffer = await window.crypto.subtle.digest("SHA-256", enc.encode(`AssetDoctorPin_${pin}`));
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
