@@ -19,18 +19,30 @@ export async function fetchUserAssets(): Promise<Asset[]> {
   if (!currentUser) return [];
 
   try {
-    const q = query(
+    // 1. Query root /assets collection matching userId == uid
+    const qRoot = query(
       collection(db, "assets"), 
       where("userId", "==", currentUser.uid)
     );
 
-    const querySnapshot = await getDocs(q);
-    const assets: Asset[] = querySnapshot.docs.map(docSnap => ({ 
+    const rootSnap = await getDocs(qRoot);
+    const rootAssets: Asset[] = rootSnap.docs.map(docSnap => ({ 
       id: docSnap.id, 
       ...(docSnap.data() as Omit<Asset, 'id'>) 
     }));
-    
-    return assets;
+
+    // 2. Query nested /users/{uid}/assets subcollection
+    const userSubSnap = await getDocs(collection(db, "users", currentUser.uid, "assets"));
+    const subAssets: Asset[] = userSubSnap.docs.map(docSnap => ({
+      id: docSnap.id,
+      ...(docSnap.data() as Omit<Asset, 'id'>)
+    }));
+
+    // Deduplicate merged assets by ID
+    const assetMap = new Map<string, Asset>();
+    [...rootAssets, ...subAssets].forEach((a) => assetMap.set(a.id, a));
+
+    return Array.from(assetMap.values());
   } catch (err) {
     console.error("Firestore fetchUserAssets Error:", err);
     return [];
@@ -45,12 +57,19 @@ export async function saveUserAsset(assetData: Omit<Asset, 'id'>): Promise<strin
   if (!currentUser) return null;
 
   try {
-    const docRef = await addDoc(collection(db, "assets"), {
+    const payload = {
       ...assetData,
       userId: currentUser.uid,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
-    });
+    };
+
+    // Save to root /assets collection
+    const docRef = await addDoc(collection(db, "assets"), payload);
+
+    // Save to nested /users/{uid}/assets subcollection
+    addDoc(collection(db, "users", currentUser.uid, "assets"), payload).catch(console.warn);
+
     return docRef.id;
   } catch (err) {
     console.error("Firestore saveUserAsset Error:", err);
