@@ -51,7 +51,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const googleUser = result.user;
+
+      if (googleUser && googleUser.email) {
+        const welcomeSentKey = `assetdoctor_welcome_sent_${googleUser.uid}`;
+        const alreadySent = localStorage.getItem(welcomeSentKey);
+        if (!alreadySent) {
+          localStorage.setItem(welcomeSentKey, 'true');
+          fetch('/api/auth/welcome-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: googleUser.email,
+              displayName: googleUser.displayName || 'Vault Owner',
+            }),
+          }).catch((err) => console.warn('Google Auth welcome email notice:', err));
+        }
+      }
     } catch (error: any) {
       console.error("Google login error:", error);
       throw error;
