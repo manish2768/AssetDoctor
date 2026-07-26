@@ -284,19 +284,13 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         </div>
       </div>
 
-      {/* Tools & Emergency */}
-      <div className="p-5 rounded-3xl bg-[#0F141F] border border-[#222C40] space-y-3">
+      {/* Quick Settings & Support */}
+      <div className="p-5 rounded-3xl bg-[#0F141F] border border-[#222C40] space-y-4">
         <h3 className="text-xs font-black uppercase tracking-widest text-[#10B981] px-1 flex items-center gap-1.5">
-          <Sparkles className="w-4 h-4" /> Tools & Emergency
+          <Sparkles className="w-4 h-4" /> Quick Settings & Preferences
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {/* PWA App Installation */}
-          <button
-            onClick={handleInstallClick}
-            className="p-3.5 rounded-2xl bg-gradient-to-r from-emerald-500/15 to-teal-500/10 border border-[#10B981]/40 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
-          >
-            <div className="flex items-center gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* App Settings & Preferences */}
           <button
             onClick={onOpenAccountSettings}
