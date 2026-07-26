@@ -20,14 +20,14 @@ export interface DocumentOCRResult {
 export async function processDocumentOCR(base64Image: string): Promise<DocumentOCRResult> {
   try {
     const apiKey = 
-      (typeof process !== 'undefined' && process.env?.VITE_GEMINI_API_KEY) ||
       (typeof process !== 'undefined' && process.env?.NEXT_PUBLIC_GEMINI_API_KEY) ||
       (typeof process !== 'undefined' && process.env?.GEMINI_API_KEY) ||
+      (typeof process !== 'undefined' && process.env?.VITE_GEMINI_API_KEY) ||
       (typeof import.meta !== 'undefined' && (import.meta as any).env?.VITE_GEMINI_API_KEY) ||
       '';
 
+    // If client-side API Key is absent, attempt server endpoint /api/scan-receipt
     if (!apiKey) {
-      // Fallback to server API endpoint /api/scan-receipt if client API key is not in browser bundle
       const response = await fetch('/api/scan-receipt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
           gstin: resData.data.gstin || '',
           totalAmount: resData.data.totalAmount || 0,
           items: (resData.data.items || []).map((it: any) => ({
-            itemName: it.itemName || 'Invoice Item',
+            itemName: it.itemName || 'Invoice Asset',
             price: Number(it.price) || 0,
             brand: it.brand || 'Generic',
             category: it.category || 'Gadgets',
@@ -51,9 +51,12 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
           })),
         };
       }
-      throw new Error(resData.error || 'Gemini API Key Missing in Environment Variables');
+
+      // NO HARDCODED MOCK FALLBACK: Throw clear error
+      throw new Error(resData.error || 'Failed to scan bill. Please check Gemini API Key or connection.');
     }
 
+    // Initialize Gemini AI Client using @google/genai
     const aiClient = new GoogleGenAI({ apiKey });
 
     const prompt = `
@@ -61,7 +64,7 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
       Extract and return ONLY a strict JSON object with this exact schema:
       {
         "merchantName": "Store/Company Name",
-        "purchaseDate": "DD/MM/YYYY",
+        "purchaseDate": "YYYY-MM-DD",
         "gstin": "GST Number if available",
         "totalAmount": 0.00,
         "items": [
@@ -69,8 +72,8 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
             "itemName": "Product/Policy Name",
             "price": 0.00,
             "brand": "Brand",
-            "category": "Gadgets/Vehicle/Insurance/etc",
-            "serialOrImei": "Serial/Frame/Engine Number if present",
+            "category": "Electronics or Vehicles or Appliances or Gadgets or Home or Other",
+            "serialOrImei": "Serial/Frame/Engine/IMEI Number if present",
             "warrantyMonths": 12
           }
         ]
@@ -79,35 +82,44 @@ export async function processDocumentOCR(base64Image: string): Promise<DocumentO
 
     const cleanBase64 = base64Image.replace(/^data:image\/\w+;base64,/, '');
 
-    const response = await aiClient.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            { text: prompt },
-            {
-              inlineData: {
-                data: cleanBase64,
-                mimeType: 'image/jpeg',
+    let response;
+    try {
+      response = await aiClient.models.generateContent({
+        model: 'gemini-1.5-flash',
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: prompt },
+              {
+                inlineData: {
+                  data: cleanBase64,
+                  mimeType: 'image/jpeg',
+                },
               },
-            },
-          ],
-        },
-      ],
-    });
+            ],
+          },
+        ],
+      });
+    } catch (modelError: any) {
+      console.error('Gemini OCR Model Error (gemini-1.5-flash failed):', modelError);
+      throw new Error(`Failed to scan bill. Gemini AI Vision error: ${modelError?.message || 'Model call failed'}`);
+    }
 
     const responseText = response.text || '';
     
     // Clean JSON response
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
-      return JSON.parse(jsonMatch[0]) as DocumentOCRResult;
+      const parsedData = JSON.parse(jsonMatch[0]) as DocumentOCRResult;
+      if (parsedData && parsedData.items && parsedData.items.length > 0) {
+        return parsedData;
+      }
     }
-    throw new Error('Failed to parse AI OCR response from Gemini');
+    throw new Error('Failed to scan bill. Could not parse structured invoice data from Gemini.');
   } catch (error: any) {
-    console.error('OCR Extraction Error:', error);
-    throw error; // Alert user instead of showing hardcoded mock data
+    console.error('Gemini OCR Error:', error);
+    throw error; // Re-throw error so UI presents explicit Alert without fake fallback data
   }
 }
 

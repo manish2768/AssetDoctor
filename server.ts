@@ -144,39 +144,10 @@ app.post('/api/scan-receipt', async (req, res) => {
     }
 
     if (!aiClient) {
-      // Fallback multi-item parsing when GEMINI_API_KEY is not set
-      console.log('Gemini API key missing, using smart mock multi-item OCR response.');
-      return res.json({
-        success: true,
-        source: 'fallback_ocr',
-        data: {
-          vendor: 'Flipkart India Pvt Ltd',
-          purchaseDate: '2026-02-14',
-          totalAmount: 27298,
-          gstin: '29AABCU9603R1ZM',
-          items: [
-            {
-              itemName: 'Nothing Phone (3a) Lite (128GB, White)',
-              brand: 'Nothing',
-              price: 23999,
-              warrantyMonths: 12,
-              category: 'Gadgets',
-              serialNumber: 'NT-PH3A-884102',
-              notes: 'Extracted from Flipkart Multi-Item Tax Invoice via AI OCR',
-              selected: true,
-            },
-            {
-              itemName: 'CMF Buds 2 Plus ANC Wireless Earbuds',
-              brand: 'CMF by Nothing',
-              price: 3299,
-              warrantyMonths: 12,
-              category: 'Gadgets',
-              serialNumber: 'CMF-BD2P-99120',
-              notes: 'Extracted from Flipkart Multi-Item Tax Invoice via AI OCR',
-              selected: true,
-            },
-          ],
-        },
+      console.error('Gemini OCR Error: GEMINI_API_KEY environment variable is not configured on server.');
+      return res.status(400).json({
+        success: false,
+        error: 'Failed to scan bill. Please check Gemini API Key or connection.',
       });
     }
 
