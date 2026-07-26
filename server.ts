@@ -202,14 +202,6 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
 
     const calculatedTotal = extractedItems.reduce((acc: number, cur: any) => acc + (cur.price || 0), 0);
 
-    return res.json({
-      success: true,
-      source: 'gemini_ocr',
-      data: {
-        vendor: jsonResult.vendor || 'Authorized Merchant',
-        purchaseDate: jsonResult.purchaseDate || new Date().toISOString().split('T')[0],
-        totalAmount: Number(jsonResult.totalAmount) || calculatedTotal,
-        gstin: jsonResult.gstin || '',
     if (!extractedItems || extractedItems.length === 0) {
       return res.status(400).json({
         success: false,
