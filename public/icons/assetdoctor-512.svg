@@ -6,14 +6,14 @@
     </linearGradient>
 
     <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.25"/>
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.04"/>
     </linearGradient>
 
     <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.6"/>
-      <stop offset="50%" stop-color="#10b981" stop-opacity="0.3"/>
-      <stop offset="100%" stop-color="#00f2fe" stop-opacity="0.8"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="50%" stop-color="#10b981" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.9"/>
     </linearGradient>
 
     <linearGradient id="glowGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -22,8 +22,8 @@
     </linearGradient>
 
     <filter id="popShadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.6"/>
-      <feDropShadow dx="0" dy="30" stdDeviation="35" flood-color="#06b6d4" flood-opacity="0.25"/>
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.5"/>
+      <feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#06b6d4" flood-opacity="0.3"/>
     </filter>
 
     <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
@@ -35,41 +35,44 @@
     </filter>
   </defs>
 
-  <rect width="512" height="512" rx="110" fill="url(#bgGrad)"/>
+  <!-- Full Canvas Background for Android Adaptive Masking -->
+  <rect width="512" height="512" fill="url(#bgGrad)"/>
 
-  <rect x="64" y="64" width="384" height="384" rx="90" 
+  <!-- Main Edge-to-Edge Glassmorphic Shield Card -->
+  <rect x="48" y="48" width="416" height="416" rx="96" 
         fill="url(#glassGrad)" 
         stroke="url(#rimGrad)" 
-        stroke-width="3.5" 
+        stroke-width="5" 
         filter="url(#popShadow)"/>
 
-  <path d="M 120 70 Q 256 95 392 70" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.4"/>
-
-  <g stroke="url(#glowGrad)" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85">
-    <path d="M 124 160 L 124 134 Q 124 124 134 124 L 160 124"/>
-    <path d="M 352 124 L 378 124 Q 388 124 388 134 L 388 160"/>
-    <path d="M 124 352 L 124 378 Q 124 388 134 388 L 160 388"/>
-    <path d="M 352 388 L 378 388 Q 388 388 388 378 L 388 352"/>
+  <!-- Futuristic Corner Markers -->
+  <g stroke="url(#glowGrad)" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.9">
+    <path d="M 96 140 L 96 116 Q 96 96 116 96 L 140 96"/>
+    <path d="M 372 96 L 396 96 Q 416 96 416 116 L 416 140"/>
+    <path d="M 96 372 L 96 396 Q 96 416 116 416 L 140 416"/>
+    <path d="M 372 416 L 396 416 Q 416 416 416 396 L 416 372"/>
   </g>
 
-  <path d="M 256 150 C 310 150 340 170 340 230 C 340 300 280 345 256 362 C 232 345 172 300 172 230 C 172 170 202 150 256 150 Z" 
+  <!-- Central Shield Crest -->
+  <path d="M 256 120 C 325 120 365 145 365 225 C 365 315 288 375 256 398 C 224 375 147 315 147 225 C 147 145 187 120 256 120 Z" 
         fill="none" 
         stroke="url(#glowGrad)" 
-        stroke-width="7" 
+        stroke-width="9" 
         stroke-linejoin="round" 
-        opacity="0.4"/>
+        opacity="0.45"/>
 
+  <!-- Central Doctor Cross + ECG Pulse Wave -->
   <g filter="url(#neonGlow)">
-    <path d="M 232 205 H 280 V 232 H 307 V 280 H 280 V 307 H 232 V 280 H 205 V 232 H 232 Z" 
+    <path d="M 226 195 H 286 V 226 H 317 V 286 H 286 V 317 H 226 V 286 H 195 V 226 H 226 Z" 
           fill="none" 
           stroke="url(#glowGrad)" 
-          stroke-width="8" 
+          stroke-width="10" 
           stroke-linejoin="round"/>
     
-    <path d="M 190 256 H 225 L 238 235 L 250 275 L 264 245 L 274 256 H 322" 
+    <path d="M 175 256 H 218 L 234 228 L 250 282 L 268 244 L 280 256 H 337" 
           fill="none" 
           stroke="#ffffff" 
-          stroke-width="5" 
+          stroke-width="6" 
           stroke-linecap="round" 
           stroke-linejoin="round"/>
   </g>
