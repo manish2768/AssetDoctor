@@ -38,6 +38,7 @@ interface AssetDetailModalProps {
   onOpenClaimModal: (asset: Asset) => void;
   onUpdateAsset?: (asset: Asset) => void;
   onOpenEmergencyModal?: (data: VehicleDocuments) => void;
+  onOpenPassportModal?: (asset: Asset) => void;
 }
 
 export const AssetDetailModal: React.FC<AssetDetailModalProps> = ({
@@ -677,13 +678,28 @@ export const AssetDetailModal: React.FC<AssetDetailModalProps> = ({
 
         {/* Modal Footer Controls */}
         <div className="p-5 border-t border-slate-800 bg-slate-900/90 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <button
-            onClick={handlePrintCertificate}
-            className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
-          >
-            <Download className="w-4 h-4" />
-            <span>Print / Save Vault PDF</span>
-          </button>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={handlePrintCertificate}
+              className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              <span>Print / Save Vault PDF</span>
+            </button>
+
+            {onOpenPassportModal && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onOpenPassportModal(asset);
+                }}
+                className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:brightness-110 text-white font-bold text-xs shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 text-cyan-200" />
+                <span>Story Passport</span>
+              </button>
+            )}
+          </div>
 
           <div className="flex items-center gap-2 w-full sm:w-auto">
             {onOpenEmergencyModal && (

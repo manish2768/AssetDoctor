@@ -31,6 +31,7 @@ import { FastagCheckerWidget } from './components/FastagCheckerWidget';
 import { LandingPage } from './components/LandingPage';
 import { Footer } from './components/Footer';
 import { SecurityLockScreen } from './components/SecurityLockScreen';
+import { AssetPassportModal } from './components/AssetPassportModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Login } from './components/Login';
 import { saveAssetToCloud } from './services/assetCloudService';
@@ -133,6 +134,7 @@ const MainContent: React.FC = () => {
 
   const [selectedAsset, setSelectedAsset] = useState<Asset | null>(null);
   const [claimAsset, setClaimAsset] = useState<Asset | null>(null);
+  const [passportAsset, setPassportAsset] = useState<Asset | null>(null);
   const [activeStatusFilter, setActiveStatusFilter] = useState<'all' | 'active' | 'expiring_soon' | 'expired'>('all');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -678,6 +680,14 @@ const MainContent: React.FC = () => {
         onOpenClaimModal={(ast) => setClaimAsset(ast)}
         onUpdateAsset={handleUpdateAsset}
         onOpenEmergencyModal={(data) => setVehicleEmergencyData(data)}
+        onOpenPassportModal={(ast) => setPassportAsset(ast)}
+      />
+
+      <AssetPassportModal
+        isOpen={!!passportAsset}
+        asset={passportAsset}
+        ownerName={userName}
+        onClose={() => setPassportAsset(null)}
       />
 
       <WarrantyClaimModal
