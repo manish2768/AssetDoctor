@@ -1,6 +1,8 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { 
   getAuth, 
+  setPersistence,
+  browserLocalPersistence,
   GoogleAuthProvider, 
   RecaptchaVerifier, 
   signInWithPhoneNumber,
@@ -23,6 +25,12 @@ const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
 // Services Export
 export const auth = getAuth(app);
+
+// Enforce Session Persistence in LocalStorage so user is NOT repeatedly logged out
+setPersistence(auth, browserLocalPersistence).catch((err) => {
+  console.warn("Firebase Auth Persistence setPersistence warning:", err);
+});
+
 export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 export const storage = getStorage(app);

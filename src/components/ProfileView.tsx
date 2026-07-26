@@ -169,7 +169,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 className="px-3 py-1.5 rounded-xl bg-[#0B0E14] hover:bg-[#161D2B] border border-[#2A344A] text-slate-300 hover:text-white text-xs font-mono transition flex items-center gap-1.5 cursor-pointer group"
               >
                 <Mail className="w-3.5 h-3.5 text-teal-400" />
-                <span>{userEmail}</span>
+                <span>{userEmail || 'Add Email Address'}</span>
               </button>
             </div>
           </div>

@@ -111,14 +111,23 @@ const MainContent: React.FC = () => {
     return localStorage.getItem('assetdoctor_is_logged_in') === 'true';
   });
   const [userName, setUserName] = useState<string>(() => {
-    return localStorage.getItem('assetdoctor_user_name') || 'Vault Owner';
+    return user?.displayName || localStorage.getItem('assetdoctor_user_name') || 'Vault Owner';
   });
   const [userPhone, setUserPhone] = useState<string>(() => {
-    return localStorage.getItem('assetdoctor_user_phone') || '+91 98765 00000';
+    return user?.phoneNumber || localStorage.getItem('assetdoctor_user_phone') || '';
   });
   const [userEmail, setUserEmail] = useState<string>(() => {
-    return localStorage.getItem('assetdoctor_user_email') || 'owner@assetdoctor.app';
+    return user?.email || localStorage.getItem('assetdoctor_user_email') || '';
   });
+
+  // Sync user state when Firebase auth user loads/changes
+  useEffect(() => {
+    if (user) {
+      if (user.displayName) setUserName(user.displayName);
+      if (user.email) setUserEmail(user.email);
+      if (user.phoneNumber) setUserPhone(user.phoneNumber);
+    }
+  }, [user]);
   const [userLocation, setUserLocation] = useState<string>(() => {
     return localStorage.getItem('assetdoctor_user_location') || 'Lucknow, Uttar Pradesh';
   });
