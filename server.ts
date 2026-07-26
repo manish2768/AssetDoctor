@@ -161,24 +161,36 @@ app.post(['/api/scan-receipt', '/api/scan', '/api/ocr'], async (req, res) => {
       });
     }
 
-    const promptText = `You are a high-precision OCR, Invoice parsing and AI Scam Guard assistant for AssetDoctor ServiVault.
-Extract ALL asset/product items and tax details listed on this receipt/invoice.
-Also search for the merchant's GSTIN (Goods & Services Tax Number, 15 characters e.g. 29AABCU9603R1ZM) if present.
+    const promptText = `You are a high-precision OCR, Invoice parsing, Vehicle RC/Insurance and AI Scam Guard assistant for AssetDoctor ServiVault.
+Extract ALL vehicle, seller, buyer, product, invoice, warranty, and tax details from this receipt/invoice/RC/policy document.
 
 Return ONLY a structured JSON matching this schema:
 {
-  "vendor": string (store or merchant name like Flipkart India, Amazon, Croma),
+  "vendor": string (dealer/store/company name),
+  "sellerName": string (dealer/store name),
+  "sellerAddress": string (seller full address),
+  "sellerPhone": string (seller contact phone),
+  "sellerGstin": string (15 character seller GSTIN if present),
+  "buyerName": string (customer/owner name),
+  "buyerPhone": string (customer phone),
   "purchaseDate": string (YYYY-MM-DD),
-  "totalAmount": number (total sum in INR),
+  "invoiceNumber": string (invoice/policy/RC number),
+  "totalAmount": number (total amount in INR),
   "gstin": string (15 character GSTIN if found, else empty),
+  "chassisNumber": string (Vehicle VIN / Chassis Number if present),
+  "registrationNumber": string (Vehicle Registration Number e.g. UP32 AB 1234),
+  "insuranceExpiryDate": string (YYYY-MM-DD for insurance policy expiry),
   "items": [
     {
-      "itemName": string (clean product name),
-      "brand": string (brand name),
+      "itemName": string (product/vehicle model name),
+      "brand": string (brand/make like TVS, Honda, Apple, Samsung),
       "price": number (in INR Rupees),
       "warrantyMonths": number (default 12 if unknown),
       "category": string ("Electronics" | "Vehicles" | "Appliances" | "Gadgets" | "Home" | "Other"),
-      "serialNumber": string,
+      "serialNumber": string (serial/IMEI/engine number),
+      "chassisNumber": string (Chassis Number),
+      "registrationNumber": string (Reg Number),
+      "insuranceExpiryDate": string (YYYY-MM-DD),
       "notes": string
     }
   ]
@@ -198,9 +210,19 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
             type: Type.OBJECT,
             properties: {
               vendor: { type: Type.STRING },
+              sellerName: { type: Type.STRING },
+              sellerAddress: { type: Type.STRING },
+              sellerPhone: { type: Type.STRING },
+              sellerGstin: { type: Type.STRING },
+              buyerName: { type: Type.STRING },
+              buyerPhone: { type: Type.STRING },
               purchaseDate: { type: Type.STRING },
+              invoiceNumber: { type: Type.STRING },
               totalAmount: { type: Type.NUMBER },
               gstin: { type: Type.STRING },
+              chassisNumber: { type: Type.STRING },
+              registrationNumber: { type: Type.STRING },
+              insuranceExpiryDate: { type: Type.STRING },
               items: {
                 type: Type.ARRAY,
                 items: {
@@ -212,6 +234,9 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
                     warrantyMonths: { type: Type.NUMBER },
                     category: { type: Type.STRING },
                     serialNumber: { type: Type.STRING },
+                    chassisNumber: { type: Type.STRING },
+                    registrationNumber: { type: Type.STRING },
+                    insuranceExpiryDate: { type: Type.STRING },
                     notes: { type: Type.STRING },
                   },
                   required: ['itemName', 'price', 'category'],
@@ -248,14 +273,17 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
     }
 
     const extractedItems = (jsonResult.items || []).map((item: any, idx: number) => ({
-      itemName: item.itemName || `Scanned Item ${idx + 1}`,
-      brand: item.brand || jsonResult.vendor || 'Generic',
+      itemName: item.itemName || jsonResult.productName || `Scanned Item ${idx + 1}`,
+      brand: item.brand || jsonResult.vendor || jsonResult.sellerName || 'Generic',
       price: Number(item.price) || 0,
       warrantyMonths: Number(item.warrantyMonths) || 12,
       category: ['Electronics', 'Vehicles', 'Appliances', 'Gadgets', 'Home', 'Other'].includes(item.category)
         ? item.category
-        : 'Electronics',
-      serialNumber: item.serialNumber || `SN-${Math.floor(100000 + Math.random() * 900000)}`,
+        : (jsonResult.chassisNumber || jsonResult.registrationNumber ? 'Vehicles' : 'Electronics'),
+      serialNumber: item.serialNumber || jsonResult.serialNumber || '',
+      chassisNumber: item.chassisNumber || jsonResult.chassisNumber || '',
+      registrationNumber: item.registrationNumber || jsonResult.registrationNumber || '',
+      insuranceExpiryDate: item.insuranceExpiryDate || jsonResult.insuranceExpiryDate || '',
       notes: item.notes || 'Verified by AssetDoctor AI OCR Scan',
       selected: true,
     }));
@@ -274,10 +302,20 @@ ${textContent ? `Invoice text content:\n${textContent}` : ''}`;
       success: true,
       source: 'gemini_ocr',
       data: {
-        vendor: jsonResult.vendor || 'Authorized Merchant',
+        vendor: jsonResult.vendor || jsonResult.sellerName || 'Authorized Merchant',
+        sellerName: jsonResult.sellerName || jsonResult.vendor || '',
+        sellerAddress: jsonResult.sellerAddress || '',
+        sellerPhone: jsonResult.sellerPhone || '',
+        sellerGstin: jsonResult.sellerGstin || jsonResult.gstin || '',
+        buyerName: jsonResult.buyerName || '',
+        buyerPhone: jsonResult.buyerPhone || '',
+        invoiceNumber: jsonResult.invoiceNumber || '',
         purchaseDate: jsonResult.purchaseDate || new Date().toISOString().split('T')[0],
         totalAmount: Number(jsonResult.totalAmount) || calculatedTotal,
-        gstin: jsonResult.gstin || '',
+        gstin: jsonResult.gstin || jsonResult.sellerGstin || '',
+        chassisNumber: jsonResult.chassisNumber || '',
+        registrationNumber: jsonResult.registrationNumber || '',
+        insuranceExpiryDate: jsonResult.insuranceExpiryDate || '',
         items: extractedItems,
       },
     });

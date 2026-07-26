@@ -369,17 +369,90 @@ export const AssetVaultGrid: React.FC<AssetVaultGridProps> = ({
           </div>
         </div>
       ) : filteredAssets.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredAssets.map((asset) => (
-            <AssetCard
-              key={asset.id}
-              asset={asset}
-              onSelect={onSelectAsset}
-              onClaim={onClaimAsset}
-              onDelete={onDeleteAsset}
-              onSharePostcard={onSharePostcard}
-            />
-          ))}
+        <div className="space-y-8">
+          {/* Category Section 1: Vehicles & Insurance */}
+          {filteredAssets.filter((a) => a.category === 'Vehicles').length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <h3 className="text-sm font-black text-cyan-400 uppercase tracking-widest flex items-center gap-2">
+                  <span>🚗 Vehicles & Insurance</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-mono">
+                    {filteredAssets.filter((a) => a.category === 'Vehicles').length} Records
+                  </span>
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAssets
+                  .filter((a) => a.category === 'Vehicles')
+                  .map((asset) => (
+                    <AssetCard
+                      key={asset.id}
+                      asset={asset}
+                      onSelect={onSelectAsset}
+                      onClaim={onClaimAsset}
+                      onDelete={onDeleteAsset}
+                      onSharePostcard={onSharePostcard}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Category Section 2: Electronics & Gadgets */}
+          {filteredAssets.filter((a) => a.category === 'Electronics' || a.category === 'Gadgets').length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <h3 className="text-sm font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2">
+                  <span>📱 Electronics & Gadgets</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-mono">
+                    {filteredAssets.filter((a) => a.category === 'Electronics' || a.category === 'Gadgets').length} Items
+                  </span>
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAssets
+                  .filter((a) => a.category === 'Electronics' || a.category === 'Gadgets')
+                  .map((asset) => (
+                    <AssetCard
+                      key={asset.id}
+                      asset={asset}
+                      onSelect={onSelectAsset}
+                      onClaim={onClaimAsset}
+                      onDelete={onDeleteAsset}
+                      onSharePostcard={onSharePostcard}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
+
+          {/* Category Section 3: Home & Appliances */}
+          {filteredAssets.filter((a) => a.category === 'Appliances' || a.category === 'Home' || a.category === 'Other').length > 0 && (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                <h3 className="text-sm font-black text-amber-400 uppercase tracking-widest flex items-center gap-2">
+                  <span>🏠 Home, Appliances & General Vault</span>
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-950 text-amber-300 border border-amber-500/40 font-mono">
+                    {filteredAssets.filter((a) => a.category === 'Appliances' || a.category === 'Home' || a.category === 'Other').length} Items
+                  </span>
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredAssets
+                  .filter((a) => a.category === 'Appliances' || a.category === 'Home' || a.category === 'Other')
+                  .map((asset) => (
+                    <AssetCard
+                      key={asset.id}
+                      asset={asset}
+                      onSelect={onSelectAsset}
+                      onClaim={onClaimAsset}
+                      onDelete={onDeleteAsset}
+                      onSharePostcard={onSharePostcard}
+                    />
+                  ))}
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         /* Filter Empty State */

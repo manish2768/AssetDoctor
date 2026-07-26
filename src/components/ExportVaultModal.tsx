@@ -251,10 +251,10 @@ export const ExportVaultModal: React.FC<ExportVaultModalProps> = ({
               </div>
               <div>
                 <div className="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">
-                  Printable Summary Certificate (PDF)
+                  CA Tax Ledger & Summary Certificate (PDF)
                 </div>
                 <div className="text-xs text-slate-400 mt-0.5">
-                  Formatted visual certificate report with total valuation & active status
+                  Formatted ledger with GSTINs, invoice numbers, vehicle chassis & reg numbers for CA filing
                 </div>
               </div>
             </div>

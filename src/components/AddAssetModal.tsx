@@ -23,6 +23,8 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
   );
   const [warrantyMonths, setWarrantyMonths] = useState<number>(12);
   const [insuranceExpiryDate, setInsuranceExpiryDate] = useState('');
+  const [chassisNumber, setChassisNumber] = useState('');
+  const [registrationNumber, setRegistrationNumber] = useState('');
   const [pucExpiryDate, setPucExpiryDate] = useState('');
   const [maintenanceType, setMaintenanceType] = useState('');
   const [maintenanceDueDate, setMaintenanceDueDate] = useState('');
@@ -40,6 +42,8 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
     setPurchaseDate(new Date().toISOString().split('T')[0]);
     setWarrantyMonths(12);
     setInsuranceExpiryDate('');
+    setChassisNumber('');
+    setRegistrationNumber('');
     setPucExpiryDate('');
     setMaintenanceType('');
     setMaintenanceDueDate('');
@@ -85,6 +89,8 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
       daysRemaining,
       status,
       insuranceExpiryDate: isVehicle && insuranceExpiryDate ? insuranceExpiryDate : undefined,
+      chassisNumber: isVehicle && chassisNumber.trim() ? chassisNumber.trim() : undefined,
+      registrationNumber: isVehicle && registrationNumber.trim() ? registrationNumber.trim() : undefined,
       pucExpiryDate: isVehicle && pucExpiryDate ? pucExpiryDate : undefined,
       maintenanceType: maintenanceType || (isVehicle ? 'Vehicle Annual Service' : 'Routine Maintenance Check'),
       maintenanceDueDate: maintenanceDueDate || expiryDate,
@@ -162,20 +168,23 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
 
           {/* Asset Name & Brand */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            {/* Asset Name */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
-                <Tag className="w-3.5 h-3.5 text-emerald-400" /> Asset / Item Name
+                <Tag className="w-3.5 h-3.5 text-emerald-400" /> Asset Name <span className="text-rose-500 font-black">*</span>
               </label>
               <input
                 type="text"
                 required
-                placeholder="e.g. TVS Ronin Bike, Daikin AC, Kent RO, Honda Creta"
+                placeholder="e.g. TVS Ronin 225, MacBook Air M2, Daikin AC"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:border-teal-500 focus:outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none"
               />
             </div>
 
+            {/* Brand / Make */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
                 <Building2 className="w-3.5 h-3.5 text-teal-400" /> Brand / Manufacturer
@@ -195,7 +204,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {/* Category */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1">
-                Category
+                Category <span className="text-rose-500 font-black">*</span>
               </label>
               <select
                 value={category}
@@ -203,7 +212,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
                 className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-sm focus:border-emerald-500 focus:outline-none cursor-pointer"
               >
                 <option value="Electronics">Electronics</option>
-                <option value="Vehicles">Vehicles (Car / Bike / Scooter)</option>
+                <option value="Vehicles">Vehicles & Insurance (Car / Bike / Scooter)</option>
                 <option value="Appliances">Appliances</option>
                 <option value="Gadgets">Gadgets</option>
                 <option value="Home">Home</option>
@@ -214,7 +223,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {/* Price in INR */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
-                <IndianRupee className="w-3.5 h-3.5 text-cyan-400" /> Price (₹ INR)
+                <IndianRupee className="w-3.5 h-3.5 text-cyan-400" /> Price (₹ INR) <span className="text-rose-500 font-black">*</span>
               </label>
               <input
                 type="number"
@@ -230,7 +239,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {/* Purchase Date */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-amber-400" /> Purchase Date
+                <Calendar className="w-3.5 h-3.5 text-amber-400" /> Purchase Date <span className="text-rose-500 font-black">*</span>
               </label>
               <input
                 type="date"
@@ -244,7 +253,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {/* Warranty Months */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Warranty (Months)
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Warranty (Months) <span className="text-rose-500 font-black">*</span>
               </label>
               <input
                 type="number"
@@ -260,7 +269,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {/* Vendor / Retailer */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
-                <Building2 className="w-3.5 h-3.5 text-slate-400" /> Merchant / Store
+                <Building2 className="w-3.5 h-3.5 text-slate-400" /> Merchant / Showroom
               </label>
               <input
                 type="text"
@@ -274,7 +283,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
             {/* Serial Number */}
             <div>
               <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
-                <Hash className="w-3.5 h-3.5 text-slate-400" /> Serial / VIN Number
+                <Hash className="w-3.5 h-3.5 text-slate-400" /> Serial / IMEI / Engine Number
               </label>
               <input
                 type="text"
@@ -293,7 +302,7 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
               <div className="flex items-center justify-between text-cyan-400 font-bold text-xs">
                 <div className="flex items-center gap-2">
                   <Car className="w-4 h-4 text-cyan-400" />
-                  <span>Vehicle Compliance & Document Expiry Tracking</span>
+                  <span>Vehicle Registration, Chassis & Insurance Details</span>
                 </div>
                 <span className="text-[10px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded font-mono">
                   Auto-Alert Active
@@ -301,6 +310,32 @@ export const AddAssetModal: React.FC<AddAssetModalProps> = ({
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                    Registration Number (Vehicle No.)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. UP32 AB 1234"
+                    value={registrationNumber}
+                    onChange={(e) => setRegistrationNumber(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-xs focus:border-cyan-500 focus:outline-none font-mono uppercase"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">
+                    Chassis / VIN Number
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. ME4MD123456789"
+                    value={chassisNumber}
+                    onChange={(e) => setChassisNumber(e.target.value)}
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-100 text-xs focus:border-cyan-500 focus:outline-none font-mono uppercase"
+                  />
+                </div>
+
                 <div>
                   <label className="block text-xs font-bold text-slate-300 mb-1 flex items-center gap-1">
                     <ShieldAlert className="w-3.5 h-3.5 text-cyan-400" /> Insurance Expiry Date

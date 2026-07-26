@@ -48,7 +48,7 @@ export const DocGearBot: React.FC<DocGearBotProps> = ({ isNewUser = false }) => 
           👋 {isNewUser ? 'Welcome to AssetDoctor' : 'Welcome Back'}, {userName}!
         </h3>
         <p className="text-xs text-emerald-400 font-medium">
-          DocGear AI Assistant • Ready to scan &amp; track
+          AssetDoctor AI Assistant • Ready to scan &amp; track
         </p>
         <p className="text-sm text-slate-300 mt-2 px-2 leading-relaxed">
           &quot;I’m ready! Scan your new bill/warranty or check your expiring assets below.&quot;

@@ -35,6 +35,15 @@ export interface Asset {
   warrantyMonths: number;
   expiryDate: string; // YYYY-MM-DD
   insuranceExpiryDate?: string; // YYYY-MM-DD for Vehicle Insurance
+  chassisNumber?: string; // VIN / Chassis Number for Vehicles
+  registrationNumber?: string; // Vehicle Reg Number e.g. UP32 AB 1234
+  sellerName?: string; // Dealer / Store Name
+  sellerAddress?: string;
+  sellerPhone?: string;
+  sellerGstin?: string;
+  buyerName?: string;
+  buyerPhone?: string;
+  invoiceNumber?: string;
   pucExpiryDate?: string; // YYYY-MM-DD for Vehicle PUC
   serviceDate?: string; // Last service or installation date
   maintenanceDueDate?: string; // YYYY-MM-DD for next maintenance / renewal
@@ -68,12 +77,26 @@ export interface ParsedInvoiceItem {
   warrantyMonths: number;
   category: AssetCategory;
   serialNumber?: string;
+  chassisNumber?: string;
+  registrationNumber?: string;
+  insuranceExpiryDate?: string;
   notes?: string;
   selected?: boolean;
 }
 
 export interface ReceiptScanResult {
   vendor?: string;
+  sellerName?: string;
+  sellerAddress?: string;
+  sellerPhone?: string;
+  sellerGstin?: string;
+  buyerName?: string;
+  buyerPhone?: string;
+  productName?: string;
+  chassisNumber?: string;
+  registrationNumber?: string;
+  insuranceExpiryDate?: string;
+  invoiceNumber?: string;
   purchaseDate: string;
   totalAmount: number;
   gstin?: string;

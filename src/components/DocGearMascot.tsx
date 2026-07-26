@@ -60,8 +60,8 @@ export const DocGearMascot: React.FC<DocGearMascotProps> = ({
   const subtitle = state === 'welcome'
     ? 'आप AssetDoctor के सुरक्षित और स्मार्ट वॉल्ट में प्रवेश कर चुके हैं।'
     : state === 'success'
-    ? 'DocGear safely secured your asset and warranty details'
-    : "DocGear got a bit confused. Let's try scanning again!";
+    ? 'AssetDoctor safely secured your asset and warranty details'
+    : "AssetDoctor got a bit confused. Let's try scanning again!";
 
   const badgeText = state === 'welcome'
     ? 'WELCOME • Vault Secured'
