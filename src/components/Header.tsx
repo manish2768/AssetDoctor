@@ -393,23 +393,6 @@ export const Header: React.FC<HeaderProps> = ({
                     </div>
                     <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-white transition" />
                   </button>
-
-                  {onLogout && (
-                    <button
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                        onLogout();
-                      }}
-                      id="header-logout-btn"
-                      className="w-full flex items-center justify-between p-2.5 rounded-xl hover:bg-rose-500/20 text-rose-300 border border-rose-500/30 text-xs font-bold transition cursor-pointer group mt-2"
-                    >
-                      <div className="flex items-center gap-2.5">
-                        <LogOut className="w-4 h-4 text-rose-400" />
-                        <span>Log Out of Account</span>
-                      </div>
-                      <ChevronRight className="w-3.5 h-3.5 text-rose-400 group-hover:translate-x-1 transition" />
-                    </button>
-                  )}
                 </div>
 
               </div>
