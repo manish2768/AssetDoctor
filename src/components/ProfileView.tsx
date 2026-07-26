@@ -79,16 +79,38 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
       setDeferredPrompt((window as any).deferredPwaPrompt);
     }
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
+    const checkInstalled = () => {
+      if (
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as any).standalone === true
+      ) {
+        setIsAppInstalled(true);
+      }
+    };
 
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-      setIsAppInstalled(true);
-    }
+    checkInstalled();
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall);
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
     };
   }, []);
+
+  const handleOpenAccountSettings = () => {
+    if (typeof onOpenAccountSettingsModal === 'function') {
+      onOpenAccountSettingsModal();
+    } else {
+      console.log("Account Settings Modal Triggered");
+    }
+  };
+
+  const handleOpenContactUs = () => {
+    if (typeof onOpenContactUs === 'function') {
+      onOpenContactUs();
+    } else {
+      console.log("Contact Us Modal Triggered");
+    }
+  };
 
   const handleInstallClick = async () => {
     const promptEvent = deferredPrompt || (window as any).deferredPwaPrompt;
@@ -293,7 +315,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* App Settings & Preferences */}
           <button
-            onClick={() => typeof onOpenAccountSettingsModal === 'function' ? onOpenAccountSettingsModal() : alert('Account Settings & Preferences coming soon!')}
+            onClick={handleOpenAccountSettings}
             className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
@@ -314,7 +336,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
 
           {/* Customer Support & Assistance */}
           <button
-            onClick={() => typeof onOpenContactUs === 'function' ? onOpenContactUs() : alert('Customer Support hub opening...')}
+            onClick={handleOpenContactUs}
             className="p-3.5 rounded-2xl bg-teal-500/10 border border-teal-500/30 hover:border-[#10B981] text-left transition flex items-center justify-between cursor-pointer group"
           >
             <div className="flex items-center gap-3">
