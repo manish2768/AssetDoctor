@@ -47,7 +47,7 @@ import {
 import { SAMPLE_ASSETS, loadDemoAssets } from './services/sampleAssets';
 import { Asset, MetricSummary } from './types';
 import { getProcessedInitialAssets, calculateExpiryDays } from './utils/assetUtils';
-import { CheckCircle2, Camera, Sparkles, ArrowRight, Bot } from 'lucide-react';
+import { CheckCircle2, Camera, Sparkles, ArrowRight, Bot, ShieldCheck, ChevronRight } from 'lucide-react';
 
 const STORAGE_KEY = 'assetdoctor_servivault_assets';
 
