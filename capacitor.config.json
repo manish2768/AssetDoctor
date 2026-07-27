@@ -1,9 +1,1 @@
-{
-  "appId": "in.assetdoctor.app",
-  "appName": "AssetDoctor",
-  "webDir": "dist",
-  "server": {
-    "url": "http://192.168.1.10:5173",
-    "cleartext": true
-  }
-}
+{"appId": "com.assetdoctor.app", "appName": "AssetDoctor", "webDir": "dist"} 
