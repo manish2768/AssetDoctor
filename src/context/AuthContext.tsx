@@ -100,7 +100,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch (error: any) {
-      console.error("Google login error:", error);
+      if (error?.code === 'auth/popup-blocked' || error?.code === 'auth/popup-closed-by-user') {
+        console.warn('Google Auth popup was blocked or closed. Please allow popups or use Email sign in.');
+      } else {
+        console.error("Google login error:", error);
+      }
       throw error;
     }
   };
