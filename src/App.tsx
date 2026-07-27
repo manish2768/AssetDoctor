@@ -15,7 +15,6 @@ import { AccountSettingsModal } from './components/AccountSettingsModal';
 import { WarrantyAlertsModal } from './components/WarrantyAlertsModal';
 import { SplashScreen } from './components/SplashScreen';
 import { WarrantyExpiryWidget } from './components/WarrantyExpiryWidget';
-import { BrandSupportDirectory } from './components/BrandSupportDirectory';
 import { ExportVaultModal } from './components/ExportVaultModal';
 import { AssetSavedModal, SavedAssetDetails } from './components/AssetSavedModal';
 import { EmergencyModal, VehicleDocuments } from './components/EmergencyModal';
@@ -154,15 +153,31 @@ const MainContent: React.FC = () => {
 
   const [isOnboardingOpen, setIsOnboardingOpen] = useState(false);
 
-  // Load from IndexedDB on initial mount
+  // Load from LocalStorage & IndexedDB on initial mount
   useEffect(() => {
     let isMounted = true;
+
+    // 1. Immediately load from localStorage for fast offline persistence
+    const savedVault = localStorage.getItem('assetdoctor_assets_vault');
+    if (savedVault) {
+      try {
+        const parsed = JSON.parse(savedVault);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setAssets(parsed);
+        }
+      } catch (e) {
+        console.warn('LocalStorage assets load warning:', e);
+      }
+    }
+
+    // 2. Load from IndexedDB
     getAllAssetsFromDB().then((dbAssets) => {
       if (!isMounted) return;
       if (dbAssets && dbAssets.length > 0) {
         setAssets(dbAssets);
-      } else {
-        setAssets([]);
+        try {
+          localStorage.setItem('assetdoctor_assets_vault', JSON.stringify(dbAssets));
+        } catch (e) {}
       }
     }).catch((err) => {
       console.warn('IndexedDB initial load error:', err);
@@ -626,9 +641,6 @@ const MainContent: React.FC = () => {
                 onOpenClaimModal={(ast) => setClaimAsset(ast)}
               />
             </div>
-
-            {/* Brand Directory */}
-            <BrandSupportDirectory />
           </div>
         )}
 
