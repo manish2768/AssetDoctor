@@ -3,6 +3,8 @@ import {
   User, 
   onAuthStateChanged, 
   signInWithPopup, 
+  signInWithRedirect,
+  getRedirectResult,
   signInWithCredential,
   GoogleAuthProvider,
   signOut,
@@ -36,7 +38,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Consume redirect auth results on mount (useful for WebView redirects)
   useEffect(() => {
+    getRedirectResult(auth).then((result) => {
+      if (result?.user) {
+        console.log("Redirect login successful:", result.user.email);
+      }
+    }).catch((err) => {
+      console.warn("getRedirectResult notice:", err);
+    });
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
@@ -81,6 +92,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithGoogle = async () => {
     try {
+      // In native Capacitor Android WebView, popup can be blocked, so use signInWithRedirect natively
+      if (Capacitor.isNativePlatform()) {
+        try {
+          await signInWithRedirect(auth, googleProvider);
+          return;
+        } catch (redirectErr) {
+          console.warn("Capacitor native redirect login notice:", redirectErr);
+        }
+      }
+
       const result = await signInWithPopup(auth, googleProvider);
       const googleUser = result.user;
 
@@ -101,10 +122,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (error: any) {
       if (error?.code === 'auth/popup-blocked' || error?.code === 'auth/popup-closed-by-user') {
-        console.warn('Google Auth popup was blocked or closed. Please allow popups or use Email sign in.');
-      } else {
-        console.error("Google login error:", error);
+        try {
+          await signInWithRedirect(auth, googleProvider);
+          return;
+        } catch (e) {
+          console.warn('Fallback signInWithRedirect notice:', e);
+        }
       }
+      console.error("Google login error:", error);
       throw error;
     }
   };
