@@ -74,7 +74,7 @@ export const PwaInstallBanner: React.FC = () => {
   return (
     <>
       {/* Floating Bottom PWA Install Banner */}
-      <div className="fixed bottom-24 left-4 right-4 z-50 max-w-lg mx-auto bg-slate-900/95 backdrop-blur-xl border border-teal-500/40 rounded-3xl p-3.5 sm:p-4 shadow-2xl shadow-slate-950/80 animate-fade-in flex items-center justify-between gap-2.5 sm:gap-3">
+      <div className="fixed bottom-[5.5rem] sm:bottom-20 left-4 right-4 z-40 max-w-lg mx-auto bg-slate-900/95 backdrop-blur-xl border border-teal-500/40 rounded-3xl p-3.5 sm:p-4 shadow-2xl shadow-slate-950/80 animate-fade-in flex items-center justify-between gap-2.5 sm:gap-3">
         <div className="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
           <div className="p-2.5 sm:p-3 rounded-2xl bg-gradient-to-tr from-teal-500 to-cyan-500 text-slate-950 shadow-md shrink-0">
             <Smartphone className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />

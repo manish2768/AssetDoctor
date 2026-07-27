@@ -237,61 +237,69 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
               </div>
             ))
           ) : (
-            /* Custom Vehicle Glass Card (TVS Ronin) Default */
-            <div className="bg-slate-900/60 backdrop-blur-md border border-slate-800 hover:border-emerald-500/40 rounded-2xl p-5 transition-all duration-300 shadow-xl relative group">
-              
-              {/* Card Header */}
-              <div className="flex justify-between items-start">
-                <div className="flex items-center gap-3">
-                  <div className="p-3 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20">
-                    <Bike className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg text-white group-hover:text-emerald-400 transition">TVS Ronin</h3>
-                    <p className="text-xs text-slate-400">Motorcycle • Vehicle Vault</p>
-                  </div>
-                </div>
-                <span className="px-2.5 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[11px] font-semibold rounded-full">
-                  Active
-                </span>
+            /* Interactive Quick-Add Preset Card when Vault is Empty */
+            <div className="col-span-1 md:col-span-2 lg:col-span-3 p-8 rounded-3xl bg-slate-900/60 border border-slate-800 text-center space-y-5 shadow-2xl relative overflow-hidden">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto shadow-xl">
+                <Plus className="w-8 h-8" />
               </div>
 
-              {/* Custom Metrics Grid for Vehicles */}
-              <div className="grid grid-cols-2 gap-3 mt-5 p-3 rounded-xl bg-slate-950/50 border border-slate-800/60 text-xs">
-                <div>
-                  <span className="text-slate-500 block text-[10px] uppercase font-medium">Asset Valuation</span>
-                  <span className="text-sm font-bold text-slate-200 mt-0.5 block">₹1,70,000</span>
-                </div>
-                <div>
-                  <span className="text-slate-500 block text-[10px] uppercase font-medium">Service Milestone</span>
-                  <span className="text-sm font-bold text-emerald-400 mt-0.5 block">5,000 KM</span>
-                </div>
+              <div className="space-y-1.5 max-w-md mx-auto">
+                <h3 className="text-xl font-black text-white">
+                  Add Your First Asset to Vault
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Your AssetDoctor Vault is clean & secure. Scan a purchase bill or tap a quick preset below to start tracking warranty & depreciation.
+                </p>
               </div>
 
-              {/* Document Attachments Status */}
-              <div className="mt-4 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/60 pt-3">
-                <span className="flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-slate-500" /> Bill & RC Stored
-                </span>
-                <span className="flex items-center gap-1.5 text-emerald-400">
-                  <Clock className="w-3.5 h-3.5" /> Maintenance On Track
-                </span>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="flex gap-2 mt-4">
-                <button className="flex-1 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 rounded-xl transition border border-slate-700/50 flex items-center justify-center gap-1.5 cursor-pointer">
-                  <span>View Asset Details</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-                </button>
-                <button 
-                  title="Download / View Bill"
-                  className="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition border border-slate-700/50 flex items-center justify-center cursor-pointer"
+              {/* 1-Click Quick Add Presets */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-2xl mx-auto pt-2">
+                <button
+                  onClick={() => typeof onOpenAddModal === 'function' ? onOpenAddModal() : alert('Add Motorcycle')}
+                  className="p-3.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer"
                 >
-                  <ExternalLink className="w-4 h-4 text-slate-400" />
+                  <span className="text-lg block mb-1">🏍️</span>
+                  <span className="text-xs font-bold text-white block group-hover:text-emerald-400">Add Motorcycle</span>
+                  <span className="text-[10px] text-slate-500">Bike, Scooter & RC</span>
+                </button>
+
+                <button
+                  onClick={() => typeof onOpenAddModal === 'function' ? onOpenAddModal() : alert('Add AC')}
+                  className="p-3.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer"
+                >
+                  <span className="text-lg block mb-1">❄️</span>
+                  <span className="text-xs font-bold text-white block group-hover:text-emerald-400">Add AC</span>
+                  <span className="text-[10px] text-slate-500">Air Conditioner & PCB</span>
+                </button>
+
+                <button
+                  onClick={() => typeof onOpenAddModal === 'function' ? onOpenAddModal() : alert('Add Smartphone')}
+                  className="p-3.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer"
+                >
+                  <span className="text-lg block mb-1">📱</span>
+                  <span className="text-xs font-bold text-white block group-hover:text-emerald-400">Add Smartphone</span>
+                  <span className="text-[10px] text-slate-500">Mobile & IMEI</span>
+                </button>
+
+                <button
+                  onClick={() => typeof onOpenAddModal === 'function' ? onOpenAddModal() : alert('Add Car')}
+                  className="p-3.5 rounded-2xl bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-emerald-500/50 text-left transition group cursor-pointer"
+                >
+                  <span className="text-lg block mb-1">🚗</span>
+                  <span className="text-xs font-bold text-white block group-hover:text-emerald-400">Add Car</span>
+                  <span className="text-[10px] text-slate-500">Car, SUV & Insurance</span>
                 </button>
               </div>
 
+              <div className="pt-3">
+                <button
+                  onClick={() => typeof onOpenOCRModal === 'function' ? onOpenOCRModal() : alert('Opening AI OCR Scanner...')}
+                  className="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs inline-flex items-center gap-2 shadow-lg shadow-emerald-500/20 cursor-pointer"
+                >
+                  <Scan className="w-4 h-4" />
+                  <span>Scan Purchase Bill / Invoice</span>
+                </button>
+              </div>
             </div>
           )}
 
