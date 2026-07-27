@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ShieldCheck, AlertTriangle, Plus, HardDrive, FileText, 
-  Bike, Search, Scan, Sparkles, Clock, ExternalLink, ChevronRight 
+  Bike, Search, Scan, Sparkles, Clock, ExternalLink, ChevronRight, Smartphone 
 } from 'lucide-react';
 import { Asset } from '../types';
+import { CredHealthBanner } from './CredHealthBanner';
+import { UrgentAlertCard } from './UrgentAlertCard';
 
 interface DashboardOverviewProps {
   assets?: Asset[];
@@ -17,9 +19,9 @@ interface DashboardOverviewProps {
 
 export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   assets = [],
-  totalValuation = 250000,
-  activeCount = 1,
-  expiringCount = 0,
+  totalValuation = 285400,
+  activeCount = 2,
+  expiringCount = 1,
   onOpenAddModal,
   onOpenOCRModal,
   onSelectAsset
@@ -89,6 +91,25 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
             <Plus className="w-5 h-5" />
             <span className="hidden sm:inline">Add Asset</span>
           </button>
+        </div>
+      </div>
+
+      {/* 2. CRED Style Net Worth & Asset Health Banner */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="md:col-span-2">
+          <CredHealthBanner 
+            totalValuation={totalValuation || 285400}
+            healthScore={94}
+            assetsCount={assets.length > 0 ? assets.length : 2}
+          />
+        </div>
+        <div>
+          <UrgentAlertCard 
+            title="PUC EXPIRING"
+            daysLeft={3}
+            assetName="TVS Ronin"
+            onRenew={() => alert('1-Tap Renewing PUC for TVS Ronin...')}
+          />
         </div>
       </div>
 
