@@ -3,6 +3,8 @@ import {
   User, 
   onAuthStateChanged, 
   signInWithPopup, 
+  signInWithCredential,
+  GoogleAuthProvider,
   signOut,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -14,6 +16,7 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { auth, googleProvider, db } from '../firebase';
+import { Capacitor } from '@capacitor/core';
 
 interface AuthContextType {
   user: User | null;
@@ -78,6 +81,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const loginWithGoogle = async () => {
     try {
+      if (Capacitor.isNativePlatform()) {
+        try {
+          const { GoogleAuth } = await import('@capacitor-community/google-auth');
+          GoogleAuth.initialize({
+            clientId: '926559836985-web3c4a58b18615ad342b66e8.apps.googleusercontent.com',
+            scopes: ['profile', 'email'],
+            grantOfflineAccess: true,
+          });
+          const nativeUser = await GoogleAuth.signIn();
+          if (nativeUser && nativeUser.authentication?.idToken) {
+            const credential = GoogleAuthProvider.credential(nativeUser.authentication.idToken);
+            const result = await signInWithCredential(auth, credential);
+            const googleUser = result.user;
+            if (googleUser && googleUser.email) {
+              const welcomeSentKey = `assetdoctor_welcome_sent_${googleUser.uid}`;
+              if (!localStorage.getItem(welcomeSentKey)) {
+                localStorage.setItem(welcomeSentKey, 'true');
+                fetch('/api/auth/welcome-email', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    email: googleUser.email,
+                    displayName: googleUser.displayName || 'Vault Owner',
+                  }),
+                }).catch((err) => console.warn('Welcome email trigger notice:', err));
+              }
+            }
+            return;
+          }
+        } catch (nativeErr: any) {
+          console.warn('Native Google Auth fallback notice:', nativeErr);
+        }
+      }
+
       const result = await signInWithPopup(auth, googleProvider);
       const googleUser = result.user;
 
