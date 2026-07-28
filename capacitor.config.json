@@ -1,1 +1,8 @@
-{"appId": "com.assetdoctor.app", "appName": "AssetDoctor", "webDir": "dist"} 
+{
+  "appId": "com.assetdoctor.app",
+  "appName": "AssetDoctor",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
